@@ -1,0 +1,137 @@
+<app-blank
+  [pageTitle]="pageTitle()"
+  [pageIcon]="pageIcon()"
+  (changeStatusEvent)="changeStatus($event)"
+  [status]="data().isActive"
+  [loading]="loading()"
+  size="col-md-5"
+>
+  <form #form="ngForm" formValidate class="admin-form" (ngSubmit)="save(form)">
+    <div class="admin-card">
+      <div class="card-header">
+        <h6>
+          <i class="bi bi-info-circle text-primary me-2"></i>Temel Bilgiler
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label for="name">Şube Adı (*)</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            class="form-control"
+            required
+            [(ngModel)]="data().name"
+          />
+          <div class="invalid-feedback">Geçerli bir şube adı girin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="card-header">
+        <h6>
+          <i class="bi bi-info-circle text-primary me-2"></i>İletişim Bilgileri
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label for="phoneNumber1">Telefon 1 (*)</label>
+          <input
+            type="text"
+            id="phoneNumber1"
+            name="phoneNumber1"
+            class="form-control"
+            required
+            minlength="10"
+            [(ngModel)]="data().contact.phoneNumber1"
+            prefix="+90"
+            mask="(000) 000 00 00"
+          />
+          <div class="invalid-feedback">Geçerli bir telefon numarası girin</div>
+        </div>
+        <div class="form-group">
+          <label for="phoneNumber2">Telefon 2</label>
+          <input
+            type="text"
+            id="phoneNumber2"
+            name="phoneNumber2"
+            class="form-control"
+            [(ngModel)]="data().contact.phoneNumber2"
+            prefix="+90"
+            mask="(000) 000 00 00"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Mail Adresi</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="form-control"
+            [(ngModel)]="data().contact.email"
+          />
+          <div class="invalid-feedback">Geçersiz email adresi</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="card-header">
+        <h6>
+          <i class="bi bi-info-circle text-primary me-2"></i>Adres Bilgileri
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label for="city">Şehir (*)</label>
+          <flexi-select
+            [data]="iller()"
+            [loading]="ilLoading()"
+            label="il_adi"
+            value="il_adi"
+            [(ngModel)]="data().address.city"
+            name="city"
+            language="tr"
+            [required]="true"
+            (ngModelChange)="getIlceler()"
+          />
+          <div class="invalid-feedback">Geçerli bir şehir adı girin</div>
+        </div>
+        <div class="form-group">
+          <label for="district">İlçe (*)</label>
+          <flexi-select
+            [data]="ilceler()"
+            label="ilce_adi"
+            value="ilce_adi"
+            [(ngModel)]="data().address.district"
+            name="district"
+            language="tr"
+            [required]="true"
+          />
+          <div class="invalid-feedback">Geçerli bir ilçe adı girin</div>
+        </div>
+        <div class="form-group">
+          <label for="fullAddress">Açık Adres (*)</label>
+          <textarea
+            id="fullAddress"
+            name="fullAddress"
+            class="form-control"
+            rows="5"
+            required
+            [(ngModel)]="data().address.fullAddress"
+          ></textarea>
+          <div class="invalid-feedback">Geçerli bir açık adres girin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group mt-2 text-end">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi" [ngClass]="pageIcon() "></i>
+        {{ btnName() }}
+      </button>
+    </div>
+  </form>
+</app-blank>

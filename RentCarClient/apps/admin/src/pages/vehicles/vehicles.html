@@ -1,0 +1,86 @@
+<app-grid
+  pageTitle="Araçlar"
+  endpoint="/rent/odata/vehicles"
+  [addOptions]="{url: '/vehicles/add', permission: 'vehicle:create' }"
+  [editOptions]="{url: '/vehicles/edit', permission: 'vehicle:edit'}"
+  [detailOptions]="{url: '/vehicles/detail', permission: 'vehicle:view'}"
+  [deleteOptions]="{url: '/rent/vehicles', permission: 'vehicle:delete'}"
+  [breadcrumbs]="bredcrumbs()"
+  captionTitle="Araç Listesi"
+>
+  <flexi-grid-column title="Araç Resmi">
+    <ng-template flexiGridCellTemplate let-item>
+      <img
+        [src]="`https://localhost:7033/images/${item.imageUrl}`"
+        alt="Araç"
+        class="vehicle-image"
+      />
+    </ng-template>
+  </flexi-grid-column>
+  <flexi-grid-column
+    field="brand"
+    title="Marka"
+    filterType="select"
+    [filterData]="brandFilterData()"
+  />
+  <flexi-grid-column field="model" title="Model" />
+  <flexi-grid-column
+    field="modelYear"
+    title="Model Yılı"
+    filterType="select"
+    [filterData]="modelYearFilterData()"
+  />
+  <flexi-grid-column
+    field="color"
+    title="Renk"
+    filterType="select"
+    [filterData]="colorFilterData()"
+  />
+  <flexi-grid-column field="plate" title="Plaka" />
+  <flexi-grid-column
+    field="categoryName"
+    title="Kategori"
+    filterType="select"
+    [filterData]="categoryFilterData()"
+  />
+  <flexi-grid-column
+    field="branchName"
+    title="Şube"
+    filterType="select"
+    [filterData]="branchFilterData()"
+  />
+  <flexi-grid-column field="vinNumber" title="Şasi No" />
+  <flexi-grid-column field="engineNumber" title="Motor No" />
+  <flexi-grid-column field="description" title="Açıklama" />
+  <flexi-grid-column
+    field="fuelType"
+    title="Yakıt"
+    filterType="select"
+    [filterData]="fuelTypeFilterData()"
+  />
+  <flexi-grid-column
+    field="transmission"
+    title="Vites"
+    filterType="select"
+    [filterData]="transmissionFilterData()"
+  />
+  <flexi-grid-column field="engineVolume" title="Motor Hacmi" />
+  <flexi-grid-column field="enginePower" title="Motor Gücü" />
+  <flexi-grid-column field="tractionType" title="Çekiş" />
+  <flexi-grid-column field="fuelConsumption" title="Yakıt Tüketimi" />
+  <flexi-grid-column field="seatCount" title="Koltuk" />
+  <flexi-grid-column field="kilometer" title="Kilometre" />
+  <flexi-grid-column field="dailyPrice" title="Günlük Fiyat" />
+  <flexi-grid-column field="weeklyDiscountRate" title="Haftalık İndirim" />
+  <flexi-grid-column field="monthlyDiscountRate" title="Aylık İndirim" />
+  <flexi-grid-column field="insuranceType" title="Sigorta Tipi" />
+  <flexi-grid-column field="lastMaintenanceDate" title="Son Bakım Tarihi" />
+  <flexi-grid-column field="lastMaintenanceKm" title="Son Bakım Km" />
+  <flexi-grid-column field="nextMaintenanceKm" title="Sonraki Bakım Km" />
+  <flexi-grid-column field="inspectionDate" title="Muayene Tarihi" />
+  <flexi-grid-column field="insuranceEndDate" title="Sigorta Bitiş" />
+  <flexi-grid-column field="cascoEndDate" title="Kasko Bitiş" />
+  <flexi-grid-column field="tireStatus" title="Lastik Durumu" />
+  <flexi-grid-column field="generalStatus" title="Genel Durum" />
+  <flexi-grid-column field="features" title="Özellikler" />
+</app-grid>

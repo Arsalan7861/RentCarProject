@@ -1,0 +1,35 @@
+<app-grid
+  pageTitle="Müşteriler"
+  endpoint="/rent/odata/customers"
+  [addOptions]="{url: '/customers/add', permission: 'user:create' }"
+  [editOptions]="{url: '/customers/edit', permission: 'user:edit'}"
+  [detailOptions]="{url: '/customers/detail', permission: 'user:view'}"
+  [deleteOptions]="{url: '/rent/customers', permission: 'user:delete'}"
+  [breadcrumbs]="breadcrumbs()"
+  captionTitle="Müşteri Listesi"
+>
+  <flexi-grid-column field="firstName" title="Ad" />
+  <flexi-grid-column field="lastName" title="Soyad" />
+  <flexi-grid-column
+    field="birthDate"
+    title="Doğum Tarihi"
+    filterType="date"
+    format="dd MMM yyyy"
+  />
+  <flexi-grid-column field="identityNumber" title="Kimlik Numarası" />
+  <flexi-grid-column field="phoneNumber" title="Telefon Numarası">
+    <ng-template flexiGridCellTemplate let-value>
+      @if (value) {
+      <span>+90{{ value.phoneNumber | mask: '(000) 000 00 00' }}</span>
+      }
+    </ng-template>
+  </flexi-grid-column>
+  <flexi-grid-column field="email" title="Mail Adresi" />
+  <flexi-grid-column field="fullAddress" title="Adres" />
+  <flexi-grid-column
+    field="drivingLicenseIssuanceDate"
+    title="Ehliyet Veriliş Tarihi"
+    filterType="date"
+    format="dd MMM yyyy"
+  />
+</app-grid>

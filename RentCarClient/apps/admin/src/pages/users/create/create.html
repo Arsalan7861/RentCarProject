@@ -1,0 +1,110 @@
+<!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
+<app-blank
+  [pageTitle]="pageTitle()"
+  [pageIcon]="pageIcon()"
+  (changeStatusEvent)="changeStatus($event)"
+  [status]="data().isActive"
+  [loading]="loading()"
+  size="col-md-5"
+>
+  <form #form="ngForm" formValidate class="admin-form" (ngSubmit)="save(form)">
+    <div class="admin-card">
+      <div class="card-header">
+        <h6>
+          <i class="bi bi-info-circle text-primary me-2"></i>Temel Bilgiler
+        </h6>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label>Ad (*)</label>
+          <input
+            type="text"
+            name="firstName"
+            class="form-control"
+            required
+            [(ngModel)]="data().firstName"
+          />
+          <div class="invalid-feedback">Geçerli bir ad girin</div>
+        </div>
+
+        <div class="form-group">
+          <label>Soyad (*)</label>
+          <input
+            type="text"
+            name="lastName"
+            class="form-control"
+            required
+            [(ngModel)]="data().lastName"
+          />
+          <div class="invalid-feedback">Geçerli bir soyad girin</div>
+        </div>
+
+        <div class="form-group">
+          <label>Kullanıcı Adı (*)</label>
+          <input
+            type="text"
+            name="userName"
+            class="form-control"
+            required
+            [(ngModel)]="data().userName"
+          />
+          <div class="invalid-feedback">Geçerli bir kullanıcı adı girin</div>
+        </div>
+
+        <div class="form-group">
+          <label>Mail Adresi (*)</label>
+          <input
+            type="text"
+            name="email"
+            class="form-control"
+            required
+            [(ngModel)]="data().email"
+          />
+          <div class="invalid-feedback">Geçerli bir mail adresi girin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <div class="card-header">
+        <h6>
+          <i class="bi bi-info-circle text-primary me-2"></i>Yetki Bilgileri
+        </h6>
+      </div>
+      <div class="card-body" style="height: 350px">
+        @if (checkIsAdmin()) {
+        <div class="form-group">
+          <label>Şube (*)</label>
+          <flexi-select
+            [data]="branches()"
+            label="name"
+            value="id"
+            name="branchId"
+            [(ngModel)]="data().branchId"
+            language="tr"
+            [required]="true"
+          />
+        </div>
+        }
+        <div class="form-group">
+          <label>Rol (*)</label>
+          <flexi-select
+            [data]="roles()"
+            label="name"
+            value="id"
+            name="roleId"
+            [(ngModel)]="data().roleId"
+            language="tr"
+            [required]="true"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="form-group mt-2 text-end">
+      <button type="submit" class="btn btn-primary">
+        <i class="bi" [ngClass]="pageIcon() "></i>
+        {{ btnName() }}
+      </button>
+    </div>
+  </form>
+</app-blank>

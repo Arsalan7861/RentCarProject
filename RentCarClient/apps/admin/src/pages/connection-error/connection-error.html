@@ -1,0 +1,105 @@
+<div
+  class="container-fluid vh-100 d-flex align-items-center justify-content-center bg-light"
+>
+  <div class="row justify-content-center w-100">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-lg border-0">
+        <div class="card-body text-center p-5">
+          <!-- Icon -->
+          <div class="mb-4">
+            <i class="bi bi-wifi-off text-danger" style="font-size: 4rem"></i>
+          </div>
+
+          <!-- Title -->
+          <h2 class="text-danger mb-3">Bağlantı Hatası</h2>
+
+          <!-- Message -->
+          <p class="text-muted mb-4 lead">
+            Sisteme geçici olarak ulaşılamıyor. <br />
+            Lütfen daha sonra tekrar deneyin.
+          </p>
+
+          <!-- Additional Info -->
+          <div class="alert alert-light border-0 mb-4">
+            <small class="text-muted">
+              <i class="bi bi-info-circle me-2"></i>
+              Bu sorun genellikle geçicidir ve kısa sürede çözülecektir.
+            </small>
+          </div>
+
+          <!-- Status Info -->
+          <div class="mb-4">
+            <div class="row text-center">
+              <div class="col-4">
+                <div class="d-flex flex-column align-items-center">
+                  <i class="bi bi-server text-muted mb-1"></i>
+                  <small class="text-muted">Server</small>
+                  <span class="badge bg-danger">Offline</span>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-flex flex-column align-items-center">
+                  <i class="bi bi-wifi text-success mb-1"></i>
+                  <small class="text-muted">İnternet</small>
+                  <span class="badge bg-success">Online</span>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-flex flex-column align-items-center">
+                  <i class="bi bi-clock text-warning mb-1"></i>
+                  <small class="text-muted">Durum</small>
+                  <span class="badge bg-warning">Bekliyor</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+
+            <a routerLink="/" class="btn btn-outline-secondary btn-lg px-4">
+              <i class="bi bi-house me-2"></i>
+              Ana Sayfaya Dön
+            </a>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="mt-4 pt-4 border-top">
+            <small class="text-muted">
+              <i class="bi bi-headset me-2"></i>
+              Sorun devam ederse IT destek ekibiyle iletişime geçin
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Animation -->
+<style>
+  .fa-spin {
+    animation: fa-spin 2s infinite linear;
+  }
+
+  @keyframes fa-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .card {
+    transition: all 0.3s ease;
+  }
+
+  .btn {
+    transition: all 0.2s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+</style>

@@ -1,0 +1,30 @@
+<app-grid
+  pageTitle="Roller"
+  endpoint="/rent/odata/roles"
+  [addOptions]="{ url: '/roles/add', permission: 'role:create' }"
+  [editOptions]="{ url: '/roles/edit', permission: 'role:edit' }"
+  [detailOptions]="{ url: '/roles/detail', permission: 'role:view' }"
+  [deleteOptions]="{ url: '/rent/roles', permission: 'role:delete' }"
+  [breadcrumbs]="breadcrumbs()"
+  [captionTitle]="'Rol Listesi'"
+>
+  <flexi-grid-column field="name" title="Rol Adı" />
+  <flexi-grid-column
+    field="permissionCount"
+    title="İzin Sayısı"
+    textAlign="center"
+  />
+
+  <ng-template #columnCommandTemplate let-time>
+    @if (this.checkPermission('role:update_permissions')) {
+    <flexi-button
+      btnColor="pink"
+      btnIcon="key"
+      title="İzinler"
+      btnSize="small"
+      flexiTooltip
+      [routerLink]="['/roles/permissions', time.id]"
+    />
+    }
+  </ng-template>
+</app-grid>

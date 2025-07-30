@@ -1,0 +1,71 @@
+<!-- eslint-disable @angular-eslint/template/label-has-associated-control -->
+<app-blank
+  [pageTitle]="pageTitle()"
+  pageIcon="bi-zoom-in"
+  [showStatusCheckbox]="false"
+  [showStatus]="true"
+  [status]="data().isActive"
+  [showAudit]="true"
+  [audit]="data()"
+  [loading]="loading()"
+  [size]="'col-md-5'"
+>
+  <div class="admin-card">
+    <div class="card-header">
+      <h6>
+        <i class="bi bi-info-circle text-primary me-2"></i>Temel Bilgileri
+      </h6>
+    </div>
+    <div class="card-body">
+      <div class="detail-grid">
+        <div class="detail-item">
+          <label class="detail-label">Ad</label>
+          <span class="detail-value"> {{ data().firstName }} </span>
+        </div>
+
+        <div class="detail-item">
+          <label class="detail-label">Soyad</label>
+          <span class="detail-value"> {{ data().lastName }} </span>
+        </div>
+
+        <div class="detail-item">
+          <label class="detail-label">Doğum Tarihi</label>
+          <span class="detail-value">
+            {{ data().birthDate | date: 'dd MMM yyyy' }}
+          </span>
+        </div>
+
+        <div class="detail-item">
+          <label class="detail-label">Kimlik Numarası</label>
+          <span class="detail-value"> {{ data().identityNumber }} </span>
+        </div>
+
+        <div class="detail-item">
+          <label class="detail-label">Telefon Numarası</label>
+          @if (data().phoneNumber) {
+          <span class="detail-value">
+            +90{{ data().phoneNumber | mask:'(000) 000-0000' }}
+          </span>
+          }
+        </div>
+
+        <div class="detail-item">
+          <label class="detail-label">Mail Adresi</label>
+          <span class="detail-value"> {{ data().email }} </span>
+        </div>
+
+        <div class="detail-item">
+          <label class="detail-label">Adres</label>
+          <span class="detail-value"> {{ data().fullAddress }} </span>
+        </div>
+
+        <div class="detail-item">
+          <label class="detail-label">Ehliyet Veriliş Tarihi</label>
+          <span class="detail-value">
+            {{ data().drivingLicenseIssuanceDate | date: 'dd MMM yyyy' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-blank>

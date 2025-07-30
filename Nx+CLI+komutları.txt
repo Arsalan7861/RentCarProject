@@ -1,0 +1,9 @@
+Proje oluşturma: npx create-nx-workspace@latest my-workspace
+
+Application ekleme: nx g @nx/angular:application admin-panel
+
+Library ekleme: nx g library my-library
+
+Çalıştırma: nx serve my-app (my-app application adı)
+
+Build etme: nx build my-app

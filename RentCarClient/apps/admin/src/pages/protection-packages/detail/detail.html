@@ -1,0 +1,45 @@
+<app-blank
+  [pageTitle]="pageTitle()"
+  pageIcon="bi-zoom-in"
+  [showStatusCheckbox]="false"
+  [showStatus]="true"
+  [status]="data().isActive"
+  [showAudit]="true"
+  [audit]="data()"
+  [loading]="loading()"
+  size="col-md-5"
+>
+  <div
+    class="protection-package-card mb-4"
+    [class.recommended]="data().isRecommended"
+  >
+    @if(data().isRecommended){
+    <div class="recommended-badge">Önerilen</div>
+    }
+    <input
+      type="radio"
+      name="protectionPackage"
+      id="packageMinimum"
+      value="minimum"
+    />
+    <label for="packageMinimum" class="package-label">
+      <div class="package-header">
+        <h6 class="package-name">{{data().name}}</h6>
+      </div>
+      <div class="package-price">
+        <div class="price-amount">{{data().price | trCurrency:'₺'}}</div>
+      </div>
+      <div class="package-header">
+        <h6 class="package-name">{{data().orderNumber}}</h6>
+      </div>
+      <div class="package-features">
+        @for(cov of data().coverages; track cov; let i = $index){
+        <div class="feature-item included">
+          <i class="bi bi-check-circle text-success"></i>
+          <span>{{cov}}</span>
+        </div>
+        }
+      </div>
+    </label>
+  </div>
+</app-blank>

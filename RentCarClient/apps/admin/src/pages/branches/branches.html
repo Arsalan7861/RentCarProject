@@ -1,0 +1,48 @@
+<app-grid
+  pageTitle="Şubeler"
+  endpoint="/rent/odata/branches"
+  [addOptions]="{ url: '/branches/add', permission: 'branch:create' }"
+  [editOptions]="{ url: '/branches/edit', permission: 'branch:edit' }"
+  [detailOptions]="{ url: '/branches/detail', permission: 'branch:view' }"
+  [deleteOptions]="{ url: '/rent/branches', permission: 'branch:delete' }"
+  [breadcrumbs]="breadcrumbs()"
+  [captionTitle]="'Şube Listesi'"
+>
+  <!-- <ng-template #commandTemplate>
+    <flexi-button
+      btnColor="primary"
+      btnIcon="Add"
+      title="Şube Ekle"
+      flexiTooltip
+    />
+  </ng-template> -->
+  <flexi-grid-column field="name" title="Şube Adı" />
+  <flexi-grid-column field="contact.phoneNumber1" title="Telefon 1">
+    <ng-template flexiGridCellTemplate let-value>
+      @if (value.contact.phoneNumber1) {
+      <span>+90{{ value.contact.phoneNumber1 | mask: '(000) 000 00 00' }}</span>
+      }
+    </ng-template>
+  </flexi-grid-column>
+  <flexi-grid-column field="contact.phoneNumber2" title="Telefon 2">
+    <ng-template flexiGridCellTemplate let-value>
+      @if (value.contact.phoneNumber2) {
+      <span>+90{{ value.contact.phoneNumber2 | mask: '(000) 000 00 00' }}</span>
+      }
+    </ng-template>
+  </flexi-grid-column>
+  <flexi-grid-column field="contact.email" title="Mail Adresi" />
+  <flexi-grid-column field="address.city" title="Şehir" />
+  <flexi-grid-column field="address.district" title="İlçe" />
+  <flexi-grid-column field="address.fullAddress" title="Açık Adres" />
+
+  <!-- <ng-template #columnCommandTemplate let-item>
+    <flexi-button
+      btnColor="primary"
+      btnIcon="Add"
+      title="Şube Ekle"
+      btnSize="small"
+      flexiTooltip
+    ></flexi-button>
+  </ng-template> -->
+</app-grid>

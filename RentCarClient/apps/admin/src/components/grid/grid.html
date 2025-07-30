@@ -1,0 +1,94 @@
+<title>RentCar | {{pageTitle()}}</title>
+<flexi-grid
+  [data]="data()"
+  [total]="total()"
+  [dataBinding]="true"
+  language="tr"
+  [loading]="loading()"
+  [showCaption]="true"
+  [captionTitle]="captionTitle()"
+  [customColumns]="columns()"
+  [commandColumnWidth]="commandColumnWidth()"
+  (dataStateChange)="dataStateChange($event)"
+  [showIndex]="showIndex()"
+  [sort]="sort()"
+  [filter]="filter()"
+>
+  <ng-template flexiGridCaptionCommandTemplate="">
+    @if (commandTemplateRef()!== undefined) {
+    <ng-container *ngTemplateOutlet="commandTemplateRef()"></ng-container>
+    } @if (checkPermission(this.addOptions().permission)) {
+    <flexi-button
+      btnColor="primary"
+      btnIcon="Add"
+      title="Ekle"
+      flexiTooltip
+      [routerLink]="this.addOptions().url"
+    />
+    }
+  </ng-template>
+
+  <ng-content />
+
+  @if (showAudit()) { @if (showIsActive()) {
+  <flexi-grid-column
+    field="isActive"
+    title="Aktif Mi?"
+    filterType="boolean"
+    [booleanData]="['Aktif', 'Pasif']"
+    textAlign="center"
+  />
+  }
+  <flexi-grid-column
+    field="createdAt"
+    title="Oluşturulma Tarihi"
+    filterType="date-time"
+    textAlign="center"
+    format="dd MMM yyyy HH:mm:ss"
+  />
+  <flexi-grid-column field="createdFullName" title="Oluşturan" />
+  <flexi-grid-column
+    field="updatedAt"
+    title="Güncellenme Tarihi"
+    filterType="date-time"
+    textAlign="center"
+    format="dd MMM yyyy HH:mm:ss"
+  />
+  <flexi-grid-column field="updatedFullName" title="Güncelleyen" />
+
+  }
+  <ng-template flexiGridColumnCommandTemplate let-item>
+    @if (columnCommandTemplateRef() !== undefined) {
+    <ng-container
+      *ngTemplateOutlet="columnCommandTemplateRef()!; context: { $implicit: item }"
+    ></ng-container>
+    } @if (checkPermission(this.detailOptions().permission)) {
+    <flexi-button
+      btnColor="indigo"
+      btnIcon="zoom_in"
+      title="Detay"
+      btnSize="small"
+      flexiTooltip
+      [routerLink]="[this.detailOptions().url, item.id]"
+    />
+    } @if (checkPermission(this.editOptions().permission)) {
+    <flexi-button
+      btnColor="info"
+      btnIcon="edit"
+      title="Güncelle"
+      btnSize="small"
+      flexiTooltip
+      [routerLink]="[this.editOptions().url, item.id]"
+    />
+    } @if (checkPermission(this.deleteOptions().permission)) {
+    <flexi-button
+      btnColor="danger"
+      btnIcon="delete"
+      title="Sil"
+      btnSize="small"
+      flexiTooltip
+      (click)="delete(item.id)"
+    />
+    }
+  </ng-template>
+</flexi-grid>

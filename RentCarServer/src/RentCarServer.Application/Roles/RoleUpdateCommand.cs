@@ -1,0 +1,45 @@
+﻿using FluentValidation;
+using GenericRepository;
+using RentCarServer.Application.Behaviors;
+using RentCarServer.Domain.Roles;
+using RentCarServer.Domain.Shared;
+using TS.MediatR;
+using TS.Result;
+
+namespace RentCarServer.Application.Roles;
+[Permission("role:edit")]
+public sealed record RoleUpdateCommand(
+    Guid Id,
+    string Name,
+    bool IsActive) : IRequest<Result<string>>;
+
+internal sealed class RoleUpdateCommandValidator : AbstractValidator<RoleUpdateCommand>
+{
+    public RoleUpdateCommandValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty()
+            .WithMessage("Geçerli bir rol adı girin.");
+    }
+}
+
+internal sealed class RoleUpdateCommandHandler(
+    IRoleRepository roleRepository,
+    IUnitOfWork unitOfWork) : IRequestHandler<RoleUpdateCommand, Result<string>>
+{
+    public async Task<Result<string>> Handle(RoleUpdateCommand request, CancellationToken cancellationToken)
+    {
+        var role = await roleRepository.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+        if (role is null)
+        {
+            return Result<string>.Failure("Rol bulunamadı.");
+        }
+
+        Name name = new(request.Name);
+        role.SetName(name);
+        role.SetStatus(request.IsActive);
+        roleRepository.Update(role);
+        await unitOfWork.SaveChangesAsync(cancellationToken);
+        return "Rol bilgisi başarıyla güncellendi.";
+    }
+}
