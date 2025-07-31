@@ -1,3 +1,4 @@
+/* eslint-disable @angular-eslint/no-output-on-prefix */
 import { httpResource } from '@angular/common/http';
 import {
   AfterViewInit,
@@ -9,6 +10,7 @@ import {
   inject,
   input,
   OnInit,
+  output,
   signal,
   TemplateRef,
   ViewEncapsulation,
@@ -16,6 +18,7 @@ import {
 import {
   FlexiGridColumnComponent,
   FlexiGridModule,
+  FlexiGridReorderModel,
   FlexiGridService,
   StateFilterModel,
   StateModel,
@@ -41,7 +44,7 @@ export interface BtnOptions {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class Grid implements AfterViewInit, OnInit {
+export default class Grid implements AfterViewInit {
   readonly pageTitle = input.required<string>();
   readonly endpoint = input.required<string>();
   readonly showAudit = input<boolean>(true);
@@ -56,6 +59,9 @@ export default class Grid implements AfterViewInit, OnInit {
   readonly showIsActive = input<boolean>(true);
   readonly sort = input<StateSortModel>({ field: '', dir: 'asc' });
   readonly filter = input<StateFilterModel[]>([]);
+  readonly reorderable = input<boolean>(false);
+
+  readonly onReorder = output<FlexiGridReorderModel>();
 
   readonly columns = contentChildren(FlexiGridColumnComponent, {
     descendants: true,
@@ -89,13 +95,6 @@ export default class Grid implements AfterViewInit, OnInit {
   readonly #http = inject(HttpService);
   readonly #common = inject(Common);
 
-  ngOnInit(): void {
-    this.state.update((prev) => ({
-      ...prev,
-      sort: this.sort(),
-    }));
-  }
-
   ngAfterViewInit(): void {
     this.#breadcrumb.reset(this.breadcrumbs());
   }
@@ -123,5 +122,9 @@ export default class Grid implements AfterViewInit, OnInit {
 
   checkPermission(permission: string) {
     return this.#common.checkPermission(permission);
+  }
+
+  onReorderMethod(event: FlexiGridReorderModel) {
+    this.onReorder.emit(event);
   }
 }

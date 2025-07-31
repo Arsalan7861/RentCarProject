@@ -1,4 +1,4 @@
-import { EntityModel } from "./entity.model";
+import { EntityModel } from './entity.model';
 
 export interface ReservationModel extends EntityModel {
   reservationNumber: string;
@@ -32,6 +32,7 @@ export interface ReservationModel extends EntityModel {
     color: string;
     categoryName: string;
     fuelConsumption: number;
+    fuelType: string;
     seatCount: number;
     tractionType: string;
     kilometer: number;
@@ -44,23 +45,23 @@ export interface ReservationModel extends EntityModel {
   reservationExtras: {
     extraId: string;
     extraName: string;
-    price: number;
+    extraPrice: number;
   }[];
   note: string;
   total: number;
   status: string;
   totalDay: number;
-  creditCartInformation: {
-    cartNumber: string,
-    owner:string;
-    expiry: string;
-    ccv: string;
-  },
+  creditCardInformation: {
+    cardNumber: string;
+    owner: string;
+    ExpirationDate: string;
+    cvv: string;
+  };
   paymentInformation: {
-    cartNumber: string,
-    owner:string;
-  },
-  histories: {title: string, description:string, createdAt: string}[]
+    cardNumber: string;
+    owner: string;
+  };
+  histories: { title: string; description: string; createdAt: string }[];
 }
 
 export const initialReservation: ReservationModel = {
@@ -71,18 +72,18 @@ export const initialReservation: ReservationModel = {
     identityNumber: '',
     phoneNumber: '',
     email: '',
-    fullAddress: ''
+    fullAddress: '',
   },
   pickUp: {
     name: '',
     fullAddress: '',
-    phoneNumber: ''
+    phoneNumber: '',
   },
   pickUpDate: '',
-  pickUpTime: '09:00',
+  pickUpTime: '09:00:00',
   pickUpDateTime: '',
   deliveryDate: '',
-  deliveryTime: '09:00',
+  deliveryTime: '09:00:00',
   deliveryDateTime: '',
   vehicleId: '',
   vehicleDailyPrice: 0,
@@ -94,11 +95,12 @@ export const initialReservation: ReservationModel = {
     color: '',
     categoryName: '',
     fuelConsumption: 0,
+    fuelType: '',
     seatCount: 0,
     tractionType: '',
     kilometer: 0,
     imageUrl: '',
-    plate: ''
+    plate: '',
   },
   protectionPackageId: '',
   protectionPackagePrice: 0,
@@ -108,14 +110,14 @@ export const initialReservation: ReservationModel = {
   total: 0,
   status: '',
   totalDay: 0,
-  creditCartInformation: {
-    cartNumber: '',
+  creditCardInformation: {
+    cardNumber: '',
     owner: '',
-    expiry: '',
-    ccv: ''
+    ExpirationDate: '',
+    cvv: '',
   },
   paymentInformation: {
-    cartNumber: '',
+    cardNumber: '',
     owner: '',
   },
   histories: [],
@@ -123,5 +125,5 @@ export const initialReservation: ReservationModel = {
   isActive: true,
   createdAt: '',
   createdBy: '',
-  createdFullName: ''
+  createdFullName: '',
 };

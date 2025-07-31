@@ -1,5 +1,6 @@
 <title>RentCar | {{pageTitle()}}</title>
 <flexi-grid
+  #grid
   [data]="data()"
   [total]="total()"
   [dataBinding]="true"
@@ -13,6 +14,8 @@
   [showIndex]="showIndex()"
   [sort]="sort()"
   [filter]="filter()"
+  [reorderable]="reorderable()"
+  (onReorder)="onReorderMethod($event)"
 >
   <ng-template flexiGridCaptionCommandTemplate="">
     @if (commandTemplateRef()!== undefined) {

@@ -5,6 +5,7 @@ using RentCarServer.Domain.Customers;
 using RentCarServer.Domain.Extras;
 using RentCarServer.Domain.ProtectionPackages;
 using RentCarServer.Domain.Reservations;
+using RentCarServer.Domain.Reservations.ValueObjects;
 using RentCarServer.Domain.Vehicles;
 
 namespace RentCarServer.Application.Reservations;
@@ -32,6 +33,7 @@ public sealed class ReservationVehicleDto
     public string Color { get; set; } = default!;
     public string CategoryName { get; set; } = default!;
     public decimal FuelConsumption { get; set; } = default!;
+    public string FuelType { get; set; } = default!;
     public int SeatCount { get; set; } = default!;
     public string TractionType { get; set; } = default!;
     public int Kilometer { get; set; } = default!;
@@ -46,6 +48,7 @@ public sealed class ReservationExtraDto
 }
 public sealed class ReservationDto : EntityDto
 {
+    public string ReservationNumber { get; set; } = default!;
     public Guid CustomerId { get; set; }
     public ReservationCustomerDto Customer { get; set; } = default!;
     public Guid PickUpLocationId { get; set; }
@@ -67,6 +70,8 @@ public sealed class ReservationDto : EntityDto
     public decimal Total { get; set; } = default!;
     public string Status { get; set; } = default!;
     public int TotalDay { get; set; } = default!;
+    public PaymenyInformation PaymentInformation { get; set; } = default!;
+    public List<ReservationHistory> Histories { get; set; } = default!;
 }
 
 
@@ -119,6 +124,7 @@ public static class Extensions
             })
             .Select(e => new ReservationDto
             {
+                ReservationNumber = e.Entity.ReservationNumber.Value,
                 Id = e.Entity.Id,
                 CustomerId = e.Entity.CustomerId,
                 Customer = new ReservationCustomerDto
@@ -153,6 +159,7 @@ public static class Extensions
                     CategoryName = categories.First(i => i.Id == e.Vehicle.CategoryId.Value).Name.Value,
                     Color = e.Vehicle.Color.Value,
                     FuelConsumption = e.Vehicle.FuelConsumption.Value,
+                    FuelType = e.Vehicle.FuelType.Value,
                     SeatCount = e.Vehicle.SeatCount.Value,
                     TractionType = e.Vehicle.TractionType.Value,
                     Kilometer = e.Vehicle.Kilometer.Value,
@@ -172,6 +179,8 @@ public static class Extensions
                 Total = e.Entity.Total.Value,
                 Status = e.Entity.Status.Value,
                 TotalDay = e.Entity.TotalDay.Value,
+                PaymentInformation = e.Entity.PaymentInformation,
+                Histories = e.Entity.Histories.ToList(),
                 IsActive = e.Entity.IsActive,
                 CreatedAt = e.Entity.CreatedAt,
                 CreatedBy = e.Entity.CreatedBy.Value,

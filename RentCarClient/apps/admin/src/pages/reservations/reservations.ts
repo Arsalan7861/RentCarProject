@@ -10,11 +10,10 @@ import { FlexiGridFilterDataModel, FlexiGridModule } from 'flexi-grid';
 import Grid from '../../components/grid/grid';
 import { BreadcrumbModel } from '../../services/breadcrumb';
 import { Common } from '../../services/common';
-import { RouterLink } from '@angular/router';
 import { NgxMaskPipe } from 'ngx-mask';
 
 @Component({
-  imports: [Grid, FlexiGridModule, CommonModule, RouterLink, NgxMaskPipe],
+  imports: [Grid, FlexiGridModule, CommonModule, NgxMaskPipe],
   templateUrl: './reservations.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

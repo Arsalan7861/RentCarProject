@@ -126,10 +126,7 @@ public sealed class ReservationCreateCommandHandler(
 
         #endregion
 
-        #region Ödeme İşlemi
-        // Ödeme işlemi burada yapılabilir. Örnek olarak, kredi kartı bilgilerini doğrulama veya ödeme API'si ile entegrasyon.
 
-        #endregion
 
         #region Reservation Objesini Oluşturma
         IdentityId customerId = new(request.CustomerId);
@@ -152,6 +149,11 @@ public sealed class ReservationCreateCommandHandler(
         Status status = Status.Pending;
         Total total = new(request.Total);
         TotalDay totalDay = new(request.TotalDay);
+        ReservationHistory history = new(
+            "Rezervasyon Oluşturuldu",
+            "Online olarak rezervasyon oluşturuldu.",
+            DateTimeOffset.Now
+            );
 
         Reservation reservation = Reservation.Create(
             customerId,
@@ -169,10 +171,20 @@ public sealed class ReservationCreateCommandHandler(
             paymentInformation,
             status,
             total,
-            totalDay
+            totalDay,
+            history
             );
         #endregion
 
+        #region Ödeme İşlemi
+        // Ödeme işlemi burada yapılabilir. Örnek olarak, kredi kartı bilgilerini doğrulama veya ödeme API'si ile entegrasyon.
+        ReservationHistory history2 = new(
+            "Ödeme Alındı",
+            "Rezervasyonun ödemesi başarıyla alındı.",
+            DateTimeOffset.Now
+            );
+        reservation.SetHistory(history2);
+        #endregion
         await reservationRepository.AddAsync(reservation, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

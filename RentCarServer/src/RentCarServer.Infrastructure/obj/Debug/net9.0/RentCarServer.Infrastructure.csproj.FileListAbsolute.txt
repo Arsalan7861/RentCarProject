@@ -36,3 +36,4 @@ C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Infrast
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Infrastructure\obj\Debug\net9.0\RentCarServer.Infrastructure.pdb
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Infrastructure\obj\Debug\net9.0\RentCarServer.Infrastructure.genruntimeconfig.cache
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Infrastructure\obj\Debug\net9.0\ref\RentCarServer.Infrastructure.dll
+C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Infrastructure\obj\Debug\net9.0\RentCarServer.Infrastructure.sourcelink.json

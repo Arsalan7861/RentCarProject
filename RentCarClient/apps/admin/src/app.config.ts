@@ -36,4 +36,4 @@ export const appConfig: ApplicationConfig = {
   ],
 };
 
-export const SKIP_ERROR_HANDLER = new HttpContextToken<boolean>(() => false);
+// export const SKIP_ERROR_HANDLER = new HttpContextToken<boolean>(() => false);

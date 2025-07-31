@@ -9,6 +9,13 @@
   captionTitle="Rezervasyon Listesi"
   [showIsActive]="false"
   commandColumnWidth="200px"
+  [sort]="{field: 'pickUpDateTime', dir: 'asc'}"
+  [filter]="[{
+    field: 'status',
+    operator: 'eq',
+    value: 'Bekliyor',
+    type: 'select'
+  }]"
 >
   <flexi-grid-column field="reservationNumber" title="Rez.Numarası" />
   <flexi-grid-column
@@ -67,7 +74,7 @@
     textAlign="right"
   />
 
-  <ng-template #columnCommandTemplate let-item>
+  <!-- <ng-template #columnCommandTemplate let-item>
     @if(item.status !== 'İptal Edildi'){
     <flexi-button
       btnColor="purple"
@@ -85,5 +92,5 @@
       [routerLink]="['/form','delivery',item.id]"
     />
     }
-  </ng-template>
+  </ng-template> -->
 </app-grid>

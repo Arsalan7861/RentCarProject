@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   ChangeDetectionStrategy,
   Component,
@@ -29,7 +30,7 @@ export default class ProtectionPackages {
     },
   ]);
 
-  readonly grid = viewChild<any>('grid');
+  readonly grid = viewChild<Grid>('grid');
 
   readonly #common = inject(Common);
   readonly #http = inject(HttpService);
@@ -40,7 +41,7 @@ export default class ProtectionPackages {
 
   onReorder(event: FlexiGridReorderModel) {
     const data: ProtectionPackageModel = event.previousData;
-    // data.orderNumber = event.currentData.orderNumber;
+    data.orderNumber = event.currentData.orderNumber;
 
     this.#http.put('/rent/protection-packages', data, () => {
       this.grid()!.result.reload();

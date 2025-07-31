@@ -21,3 +21,4 @@ C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Domain\
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Domain\obj\Debug\net9.0\refint\RentCarServer.Domain.dll
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Domain\obj\Debug\net9.0\RentCarServer.Domain.pdb
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Domain\obj\Debug\net9.0\ref\RentCarServer.Domain.dll
+C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Domain\obj\Debug\net9.0\RentCarServer.Domain.sourcelink.json

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @nx/enforce-module-boundaries */
 import { DatePipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { httpResource } from '@angular/common/http';
@@ -25,7 +26,10 @@ import {
   initialReservation,
   ReservationModel,
 } from 'apps/admin/src/models/reservation.model';
-import { VehicleModel } from 'apps/admin/src/models/vehicle.model';
+import {
+  initialVehicleModel,
+  VehicleModel,
+} from 'apps/admin/src/models/vehicle.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
@@ -43,6 +47,7 @@ import { TrCurrencyPipe } from 'tr-currency';
 import { fuelTypeList, transmissionList } from '../../vehicles/create/create';
 import { VehiclePipe } from 'apps/admin/src/pipes/vehicle-pipe';
 import { ProtectionPackageModel } from 'apps/admin/src/models/protection-package.model';
+import { ExtraModel } from 'apps/admin/src/models/extra.model';
 
 @Component({
   imports: [
@@ -67,7 +72,7 @@ import { ProtectionPackageModel } from 'apps/admin/src/models/protection-package
 })
 export default class Create {
   readonly id = signal<string | undefined>(undefined);
-  readonly breadcrumbs = signal<BreadcrumbModel[]>([
+  readonly bredcrumbs = signal<BreadcrumbModel[]>([
     {
       title: 'Rezervasyonlar',
       icon: 'bi-calendar-check',
@@ -75,13 +80,12 @@ export default class Create {
     },
   ]);
   readonly pageTitle = computed(() =>
-    this.id() ? 'Rezervasyon Güncelle' : 'Yeni Rezervasyon'
+    this.id() ? 'Rezervasyon Güncelle' : 'Rezervasyon Ekle'
   );
-  readonly pageIcon = computed(() =>
-    this.id() ? 'bi-pencil-square' : 'bi-plus'
+  readonly pageIcon = computed(() => (this.id() ? 'bi-pen' : 'bi-plus'));
+  readonly btnName = computed(() =>
+    this.id() ? 'Rezervasyonu Güncelle' : 'Rezervasyon Oluştur'
   );
-  readonly btnName = computed(() => (this.id() ? 'Güncelle' : 'Ekle'));
-
   readonly result = resource({
     params: () => this.id(),
     loader: async () => {
@@ -91,22 +95,58 @@ export default class Create {
           `/rent/reservations/${this.id()}`
         )
       );
-      this.breadcrumbs.update((prev) => [
+      this.bredcrumbs.update((prev) => [
         ...prev,
         {
           title: res.data!.customer.fullName,
           icon: 'bi-pen',
-          url: `/reservations/edit/${this.id()}`,
+          url: `/reservation/edit/${this.id()}`,
           isActive: true,
         },
       ]);
-      this.#breadcrumb.reset(this.breadcrumbs());
+      this.#breadcrumb.reset(this.bredcrumbs());
+
+      const customer = res.data!.customer;
+      this.selectedCustomer.set({
+        ...initialCustomerModel,
+        id: res.data!.customerId,
+        fullName: customer.fullName,
+        fullAddress: customer.fullAddress,
+        phoneNumber: customer.phoneNumber,
+        email: customer.email,
+      });
+
+      const vehicle = res.data!.vehicle;
+      this.selectedVehicle.set({
+        ...initialVehicleModel,
+        id: vehicle.id,
+        brand: vehicle.brand,
+        model: vehicle.model,
+        modelYear: vehicle.modelYear,
+        color: vehicle.color,
+        categoryName: vehicle.categoryName,
+        fuelConsumption: vehicle.fuelConsumption,
+        seatCount: vehicle.seatCount,
+        tractionType: vehicle.tractionType,
+        kilometer: vehicle.kilometer,
+        imageUrl: vehicle.imageUrl,
+        dailyPrice: res.data!.vehicleDailyPrice,
+      });
+
+      this.vehicles.set([{ ...this.selectedVehicle()! }]);
+
+      let totalExtra = 0;
+      res.data!.reservationExtras.forEach((val) => {
+        totalExtra += val.extraPrice * res.data!.totalDay;
+      });
+      this.totalExtra.set(totalExtra);
+
       return res.data;
     },
   });
-  readonly data = linkedSignal(() => {
-    return this.result.value() ?? { ...initialReservation };
-  });
+  readonly data = linkedSignal(
+    () => this.result.value() ?? { ...initialReservation }
+  );
   readonly loading = linkedSignal(() => this.result.isLoading());
   isCustomerPopupVisible = false;
   readonly isCustomerPopupLoading = signal<boolean>(false);
@@ -114,21 +154,20 @@ export default class Create {
     ...initialCustomerModel,
   });
   readonly customerState = signal<StateModel>(new StateModel());
-  readonly customerResult = httpResource<ODataModel<CustomerModel>>(() => {
+  readonly customersResult = httpResource<ODataModel<CustomerModel>>(() => {
     let endpoint = '/rent/odata/customers?count=true&';
     const part = this.#grid.getODataEndpoint(this.customerState());
     endpoint += part;
     return endpoint;
   });
   readonly customersData = computed(
-    () => this.customerResult.value()?.value ?? []
+    () => this.customersResult.value()?.value ?? []
   );
   readonly customersTotal = computed(
-    () => this.customerResult.value()?.['@odata.count'] ?? 0
+    () => this.customersResult.value()?.['@odata.count'] ?? 0
   );
-  readonly customersLoading = computed(() => this.customerResult.isLoading());
+  readonly customersLoading = computed(() => this.customersResult.isLoading());
   readonly selectedCustomer = signal<CustomerModel | undefined>(undefined);
-
   readonly branchResult = httpResource<ODataModel<BranchModel>>(
     () => '/rent/odata/branches'
   );
@@ -140,15 +179,13 @@ export default class Create {
   readonly timeData = signal<string[]>(
     Array.from({ length: 31 }, (_, i) => {
       const hour = 9 + Math.floor(i / 2);
-      const min = i % 2 === 0 ? '00' : '30';
-      return `${hour.toString().padStart(2, '0')}:${min}`;
+      const minute = i % 2 === 0 ? '00' : '30';
+      return `${hour.toString().padStart(2, '0')}:${minute}`;
     })
   );
   readonly branchName = linkedSignal(() => this.#common.decode().branch);
-
   readonly vehicles = signal<VehicleModel[]>([]);
-  readonly vehiclesLoading = signal<boolean>(false);
-
+  readonly vehicleLoading = signal<boolean>(false);
   readonly categoryResult = httpResource<ODataModel<CategoryModel>>(
     () => '/rent/odata/categories'
   );
@@ -156,10 +193,8 @@ export default class Create {
     () => this.categoryResult.value()?.value ?? []
   );
   readonly categoriesLoading = computed(() => this.categoryResult.isLoading());
-
-  readonly fuelTypeList = computed(() => fuelTypeList);
-  readonly transmissionList = computed(() => transmissionList);
-
+  readonly fuelTypeList = () => fuelTypeList;
+  readonly transmissionList = () => transmissionList;
   readonly vehicleFilter = signal<{
     categoryName: string;
     fuelType: string;
@@ -170,16 +205,21 @@ export default class Create {
     transmission: '',
   });
   readonly selectedVehicle = signal<VehicleModel | undefined>(undefined);
-
   readonly protectionPackageResult = httpResource<
     ODataModel<ProtectionPackageModel>
-  >(() => '/rent/odata/protection-packages?&$orderby=OrderNumber');
+  >(() => '/rent/odata/protection-packages?$orderby=OrderNumber');
   readonly protectionPackagesData = computed(
     () => this.protectionPackageResult.value()?.value ?? []
   );
   readonly protectionPackagesLoading = computed(() =>
     this.protectionPackageResult.isLoading()
   );
+  readonly extraResult = httpResource<ODataModel<ExtraModel>>(
+    () => '/rent/odata/extras'
+  );
+  readonly extrasData = computed(() => this.extraResult.value()?.value ?? []);
+  readonly extrasLoading = computed(() => this.extraResult.isLoading());
+  readonly totalExtra = signal<number>(0);
 
   readonly #breadcrumb = inject(BreadcrumbService);
   readonly #activated = inject(ActivatedRoute);
@@ -195,43 +235,55 @@ export default class Create {
       if (res['id']) {
         this.id.set(res['id']);
       } else {
-        this.breadcrumbs.update((prev) => [
+        this.bredcrumbs.update((prev) => [
           ...prev,
           {
             title: 'Ekle',
             icon: 'bi-plus',
-            url: '/reservations/add',
+            url: '/reservation/add',
             isActive: true,
           },
         ]);
-        this.#breadcrumb.reset(this.breadcrumbs());
-
-        const date = this.#date.transform(new Date(), 'yyyy-MM-dd');
+        this.#breadcrumb.reset(this.bredcrumbs());
+        const date = this.#date.transform('01.01.2000', 'yyyy-MM-dd')!;
         this.customerPopupData.update((prev) => ({
           ...prev,
-          birthDate: date!,
-          drivingLicenseIssuanceDate: date!,
+          dateOfBirth: date,
+          drivingLicenseIssuanceDate: date,
         }));
-
         const now = this.#date.transform(new Date(), 'yyyy-MM-dd')!;
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowDate = this.#date.transform(tomorrow, 'yyyy-MM-dd')!;
+        const tomorrowDate = new Date();
+        tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+        const tomorrow = this.#date.transform(tomorrowDate, 'yyyy-MM-dd')!;
 
         this.data.update((prev) => ({
           ...prev,
           pickUpDate: now,
-          deliveryDate: tomorrowDate,
+          deliveryDate: tomorrow,
         }));
+
+        this.calculateDayDifference();
       }
     });
-    this.calculateDayDifference();
   }
 
   save(form: NgForm) {
     if (!form.valid) return;
+
+    if (!this.data().protectionPackageId) {
+      this.#toast.showToast('Uyarı', 'Güvence paketi seçmelisiniz', 'error');
+      return;
+    }
+
     this.loading.set(true);
     if (!this.id()) {
+      const cartInformation = { ...this.data().creditCardInformation };
+      cartInformation.cvv = cartInformation.cvv.toString();
+      this.data.update((prev) => ({
+        ...prev,
+        creditCardInformation: { ...cartInformation },
+      }));
+
       this.#http.post<string>(
         '/rent/reservations',
         this.data(),
@@ -256,11 +308,10 @@ export default class Create {
     }
   }
 
-  saveCustomer(customerForm: NgForm) {
-    if (!customerForm.valid) return;
+  saveCustomer(form: NgForm) {
+    if (!form.valid) return;
 
     this.loading.set(true);
-
     this.#http.post<string>(
       '/rent/customers',
       this.customerPopupData(),
@@ -268,30 +319,22 @@ export default class Create {
         this.#toast.showToast('Başarılı', res, 'success');
         this.loading.set(false);
       },
-      () => {
-        this.loading.set(false);
-      }
+      () => this.loading.set(false)
     );
   }
 
-  customersDataStateChange(state: StateModel) {
+  customerDataStateChange(state: StateModel) {
     this.customerState.set(state);
   }
 
   selectCustomer(item: CustomerModel) {
     this.selectedCustomer.set(item);
-    this.data.update((prev) => ({
-      ...prev,
-      customerId: item.id,
-    }));
+    this.data.update((prev) => ({ ...prev, customerId: item.id }));
   }
 
   clearCustomer() {
     this.selectedCustomer.set(undefined);
-    this.data.update((prev) => ({
-      ...prev,
-      customerId: '',
-    }));
+    this.data.update((prev) => ({ ...prev, customerId: '' }));
   }
 
   calculateDayDifference() {
@@ -319,8 +362,8 @@ export default class Create {
     this.data.update((prev) => ({ ...prev, totalDay: totalDay }));
   }
 
-  setLocation(id: any) {
-    const branch = this.branchesData().find((b) => b.id === id)!;
+  setLocation(id: string) {
+    const branch = this.branchesData().find((i) => i.id == id)!;
     this.branchName.set(branch.name);
   }
 
@@ -332,19 +375,18 @@ export default class Create {
       pickUpDate: this.data().pickUpDate,
       pickUpTime: this.data().pickUpTime,
       deliveryDate: this.data().deliveryDate,
-      deliveryTime: this.data().deliveryTime,
+      deliverTime: this.data().deliveryTime,
     };
-    this.vehiclesLoading.set(true);
+
+    this.vehicleLoading.set(true);
     this.#http.post<VehicleModel[]>(
       '/rent/reservations/vehicle-getall',
       data,
       (res) => {
         this.vehicles.set(res);
-        this.vehiclesLoading.set(false);
+        this.vehicleLoading.set(false);
       },
-      () => {
-        this.vehiclesLoading.set(false);
-      }
+      () => this.vehicleLoading.set(false)
     );
   }
 
@@ -353,19 +395,19 @@ export default class Create {
     return endpoint + vehicle.imageUrl;
   }
 
-  selectVehicle(vehicle: VehicleModel) {
-    this.selectedVehicle.set(vehicle);
+  selectVehicle(item: VehicleModel) {
+    this.selectedVehicle.set(item);
     this.data.update((prev) => ({
       ...prev,
-      vehicleId: vehicle.id,
-      vehicleDailyPrice: vehicle.dailyPrice,
-      vehicle: vehicle,
+      vehicleId: item.id,
+      vehicle: item,
+      vehicleDailyPrice: item.dailyPrice,
     }));
     this.calculateTotal();
   }
 
   selectProtectionPackage(val: ProtectionPackageModel) {
-    if (this.data().protectionPackageId === val.id) {
+    if (val.id === this.data().protectionPackageId) {
       this.data.update((prev) => ({
         ...prev,
         protectionPackageId: '',
@@ -383,14 +425,42 @@ export default class Create {
     this.calculateTotal();
   }
 
+  selectExtra(val: ExtraModel) {
+    const extras = [...this.data().reservationExtras];
+    const index = extras.findIndex((i) => i.extraId === val.id);
+
+    if (index !== -1) {
+      extras.splice(index, 1);
+    } else {
+      extras.push({
+        extraId: val.id,
+        extraPrice: val.price,
+        extraName: val.name,
+      });
+    }
+
+    this.data.update((prev) => ({ ...prev, reservationExtras: extras }));
+    this.calculateTotal();
+  }
+
   calculateTotal() {
-    const totalVehicle = this.data().vehicleDailyPrice * this.data().totalDay;
-    const totalProtectionPackage =
-      this.data().protectionPackagePrice * this.data().totalDay;
-    const total = totalVehicle + totalProtectionPackage;
+    const currentData = this.data();
+    const totalVehicle = currentData.vehicleDailyPrice * currentData.totalDay;
+    const totalProtectionpackage =
+      currentData.protectionPackagePrice * currentData.totalDay;
+    let totalExtra = 0;
+    currentData.reservationExtras.forEach((val) => {
+      totalExtra += val.extraPrice * currentData.totalDay;
+    });
+    this.totalExtra.set(totalExtra);
+    const total = totalVehicle + totalProtectionpackage + totalExtra;
     this.data.update((prev) => ({
       ...prev,
       total: total,
     }));
+  }
+
+  checkedExtra(val: ExtraModel) {
+    return this.data().reservationExtras.some((i) => i.extraId === val.id);
   }
 }

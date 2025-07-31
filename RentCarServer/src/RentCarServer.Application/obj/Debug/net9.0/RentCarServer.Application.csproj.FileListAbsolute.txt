@@ -25,3 +25,4 @@ C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Applica
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Application\bin\Debug\net9.0\RentCarServer.Domain.dll
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Application\bin\Debug\net9.0\RentCarServer.Domain.pdb
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Application\obj\Debug\net9.0\RentCarS.290BE89E.Up2Date
+C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.Application\obj\Debug\net9.0\RentCarServer.Application.sourcelink.json

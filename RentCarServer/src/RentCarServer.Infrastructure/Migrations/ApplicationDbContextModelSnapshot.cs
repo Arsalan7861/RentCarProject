@@ -1087,6 +1087,53 @@ namespace RentCarServer.Infrastructure.Migrations
                                 .HasForeignKey("ReservationId");
                         });
 
+                    b.OwnsMany("RentCarServer.Domain.Reservations.ValueObjects.ReservationHistory", "Histories", b1 =>
+                        {
+                            b1.Property<Guid>("ReservationId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTimeOffset>("CreatedAt")
+                                .HasColumnType("datetimeoffset");
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(MAX)");
+
+                            b1.Property<string>("Title")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(MAX)");
+
+                            b1.HasKey("ReservationId", "Id");
+
+                            b1.ToTable("ReservationHistory");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ReservationId");
+                        });
+
+                    b.OwnsOne("RentCarServer.Domain.Reservations.ValueObjects.ReservationNumber", "ReservationNumber", b1 =>
+                        {
+                            b1.Property<Guid>("ReservationId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(MAX)");
+
+                            b1.HasKey("ReservationId");
+
+                            b1.ToTable("Reservations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ReservationId");
+                        });
+
                     b.OwnsOne("RentCarServer.Domain.Reservations.ValueObjects.Status", "Status", b1 =>
                         {
                             b1.Property<Guid>("ReservationId")
@@ -1145,6 +1192,8 @@ namespace RentCarServer.Infrastructure.Migrations
                     b.Navigation("DeliveryTime")
                         .IsRequired();
 
+                    b.Navigation("Histories");
+
                     b.Navigation("Note")
                         .IsRequired();
 
@@ -1164,6 +1213,9 @@ namespace RentCarServer.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ReservationExtras");
+
+                    b.Navigation("ReservationNumber")
+                        .IsRequired();
 
                     b.Navigation("Status")
                         .IsRequired();

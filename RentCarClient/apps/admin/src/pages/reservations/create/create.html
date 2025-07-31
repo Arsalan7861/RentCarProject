@@ -34,7 +34,7 @@
                   [loading]="customersLoading()"
                   commandColumnWidth="40px"
                   language="tr"
-                  (dataStateChange)="customersDataStateChange($event)"
+                  (dataStateChange)="customerDataStateChange($event)"
                 >
                   <flexi-grid-column field="fullName" title="Ad Soyad" />
                   <flexi-grid-column
@@ -130,7 +130,7 @@
                   required
                 >
                   @for(time of timeData(); track time){
-                  <option>{{time}}</option>
+                  <option [value]="time + ':00'">{{time}}</option>
                   }
                 </select>
               </div>
@@ -155,7 +155,7 @@
                   required
                 >
                   @for (time of timeData(); track time) {
-                  <option>{{ time }}</option>
+                  <option [value]="time + ':00'">{{ time }}</option>
                   }
                 </select>
               </div>
@@ -278,7 +278,10 @@
                   value="gold"
                 />
                 <label for="packageGold" class="package-label">
-                  <div class="package-header" [class.protection-package-selected]="val.id === data().protectionPackageId">
+                  <div
+                    class="package-header"
+                    [class.protection-package-selected]="val.id === data().protectionPackageId"
+                  >
                     <h6 class="package-name">{{val.name}}</h6>
                     <div class="package-rating">
                       <i class="bi bi-star-fill text-warning"></i>
@@ -289,7 +292,7 @@
                   <div class="package-price">
                     <div class="price-label text-success">Muafiyetsiz</div>
                   </div>
-                  <div class="package-features" style="height: 250px;">
+                  <div class="package-features" style="height: 250px">
                     @for (detail of val.coverages; track detail) {
                     <div class="feature-item included">
                       <i class="bi bi-check-circle text-success"></i>
@@ -298,7 +301,9 @@
                     }
                   </div>
                   <div class="package-footer">
-                    <div class="daily-price">+{{val.price| trCurrency:'₺'}}<span>/gün</span></div>
+                    <div class="daily-price">
+                      +{{val.price| trCurrency:'₺'}}<span>/gün</span>
+                    </div>
                   </div>
                 </label>
               </div>
@@ -331,62 +336,26 @@
               <div class="col-12">
                 <h6 class="mb-3">Ek Ekipmanlar</h6>
                 <div class="extras-grid">
+                  @for (val of extrasData(); track val.id) {
                   <div class="extra-item">
                     <div class="form-check">
                       <input
                         class="form-check-input"
                         type="checkbox"
-                        id="gps"
+                        id="gps{{val.id}}"
+                        (change)="selectExtra(val)"
+                        [checked]="checkedExtra(val)"
                       />
-                      <label class="form-check-label" for="gps">
+                      <label class="form-check-label" for="gps{{val.id}}">
                         <i class="bi bi-geo-alt text-primary"></i>
-                        <span class="extra-name">GPS Navigasyon</span>
-                        <span class="extra-price">+15₺/gün</span>
+                        <span class="extra-name">{{val.name}}</span>
+                        <span class="extra-price"
+                          >+{{val.price | trCurrency:'₺'}}/gün</span
+                        >
                       </label>
                     </div>
                   </div>
-                  <div class="extra-item">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="babySeat"
-                      />
-                      <label class="form-check-label" for="babySeat">
-                        <i class="bi bi-person-badge text-primary"></i>
-                        <span class="extra-name">Bebek Koltuğu</span>
-                        <span class="extra-price">+20₺/gün</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="extra-item">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="additionalDriver"
-                      />
-                      <label class="form-check-label" for="additionalDriver">
-                        <i class="bi bi-person-plus text-primary"></i>
-                        <span class="extra-name">Ek Sürücü</span>
-                        <span class="extra-price">+25₺/gün</span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="extra-item">
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="insurance"
-                      />
-                      <label class="form-check-label" for="insurance">
-                        <i class="bi bi-shield-check text-primary"></i>
-                        <span class="extra-name">Tam Kasko</span>
-                        <span class="extra-price">+50₺/gün</span>
-                      </label>
-                    </div>
-                  </div>
+                  }
                 </div>
               </div>
 
@@ -397,12 +366,15 @@
                   class="form-control"
                   rows="3"
                   placeholder="Müşterinin özel istekleri veya rezervasyon notları..."
+                  name="note"
+                  [(ngModel)]="data().note"
                 ></textarea>
               </div>
             </div>
           </div>
         </div>
 
+        @if (!id()) {
         <!-- Step 5: Ödeme Bilgileri -->
         <div class="admin-card">
           <div class="card-header">
@@ -413,55 +385,80 @@
           </div>
           <div class="card-body">
             <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">Ödeme Yöntemi *</label>
-                <select class="form-select" required>
-                  <option value="">Seçiniz</option>
-                  <option value="credit-card">Kredi Kartı</option>
-                  <option value="cash">Nakit</option>
-                  <option value="bank-transfer">Banka Havalesi</option>
-                  <option value="corporate">Kurumsal Fatura</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Depozit Tutarı *</label>
+              <div class="col-md-12">
+                <label class="form-label">Kart Sahibi *</label>
                 <div class="input-group">
                   <input
-                    type="number"
+                    type="text"
                     class="form-control"
-                    value="2000"
+                    name="creditCardOwner"
+                    [(ngModel)]="data().creditCardInformation.owner"
+                    placeholder="John Doe"
                     required
                   />
-                  <span class="input-group-text">₺</span>
+                  <span class="input-group-text">
+                    <i class="bi bi-person"></i>
+                  </span>
                 </div>
               </div>
-              <div class="col-12">
-                <div class="payment-options">
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="depositPaid"
-                    />
-                    <label class="form-check-label" for="depositPaid">
-                      Depozit alındı
-                    </label>
-                  </div>
-                  <div class="form-check">
-                    <input
-                      class="form-check-input"
-                      type="checkbox"
-                      id="fullPayment"
-                    />
-                    <label class="form-check-label" for="fullPayment">
-                      Tam ödeme alındı
-                    </label>
-                  </div>
+              <div class="col-md-12">
+                <label class="form-label">Kart Numarası *</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    mask="0000 0000 0000 0000"
+                    name="cardNumber"
+                    [(ngModel)]="data().creditCardInformation.cardNumber"
+                    placeholder="4444 4444 4444 4444"
+                    required
+                  />
+                  <span class="input-group-text">
+                    <i class="bi bi-credit-card"></i>
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Son Kullanma Tarihi *</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    mask="00/00"
+                    [(ngModel)]="data().creditCardInformation.ExpirationDate"
+                    placeholder="12/25"
+                    name="expiry"
+                    required
+                  />
+                  <span class="input-group-text">
+                    <i class="bi bi-calendar"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">CCV Kodu *</label>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    mask="000"
+                    name="ccv"
+                    [(ngModel)]="data().creditCardInformation.cvv"
+                    placeholder="333"
+                    minlength="3"
+                    maxlength="3"
+                    required
+                  />
+                  <span class="input-group-text">
+                    <i class="bi bi-shield-lock"></i>
+                  </span>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        }
       </div>
 
       <!-- Sağ Kolon - Özet ve İşlemler -->
@@ -547,11 +544,13 @@
                   </div>
                   <div class="price-line">
                     <span>Ek Hizmetler</span>
-                    <span id="extrasPrice"></span>
+                    <span id="totalExtra"
+                      >{{totalExtra() | trCurrency:'₺'}}</span
+                    >
                   </div>
                   <div class="price-line discount">
                     <span>İndirimler</span>
-                    <span id="discountPrice"></span>
+                    <span id="discountPrice">0₺</span>
                   </div>
                   <hr />
                   <div class="price-line total">
@@ -574,13 +573,7 @@
                 </div>
                 <div class="form-actions">
                   <button type="submit" class="btn btn-primary w-100 mb-2">
-                    <i class="bi bi-check-circle me-2"></i>Rezervasyon Oluştur
-                  </button>
-                  <button type="button" class="btn btn-success w-100 mb-2">
-                    <i class="bi bi-check-all me-2"></i>Oluştur ve Onayla
-                  </button>
-                  <button type="button" class="btn btn-outline-secondary w-100">
-                    <i class="bi bi-save me-2"></i>Taslak Olarak Kaydet
+                    <i class="bi bi-check-circle me-2"></i>{{btnName()}}
                   </button>
                 </div>
               </div>

@@ -374,3 +374,4 @@ C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.WebAPI\
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.WebAPI\bin\Debug\net9.0\RentCarServer.WebAPI.staticwebassets.runtime.json
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.WebAPI\bin\Debug\net9.0\TS.FileService.dll
 C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.WebAPI\obj\Debug\net9.0\RentCarServer.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Arsalan Khroush\Desktop\RentCar\RentCarServer\src\RentCarServer.WebAPI\obj\Debug\net9.0\RentCarServer.WebAPI.sourcelink.json
