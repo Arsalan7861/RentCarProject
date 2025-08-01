@@ -7,6 +7,8 @@ using RentCarServer.Domain.Abstractions;
 using RentCarServer.Domain.Branches;
 using RentCarServer.Domain.Customers;
 using RentCarServer.Domain.Reservations;
+using RentCarServer.Domain.Reservations.Forms;
+using RentCarServer.Domain.Reservations.Forms.ValueObjects;
 using RentCarServer.Domain.Reservations.ValueObjects;
 using RentCarServer.Domain.Shared;
 using RentCarServer.Domain.Vehicles;
@@ -126,8 +128,6 @@ public sealed class ReservationCreateCommandHandler(
 
         #endregion
 
-
-
         #region Reservation Objesini Oluşturma
         IdentityId customerId = new(request.CustomerId);
         IdentityId pickUpLocationId = new(locationId);
@@ -155,6 +155,72 @@ public sealed class ReservationCreateCommandHandler(
             DateTimeOffset.Now
             );
 
+        Form? prevPickupForm = await reservationRepository
+            .Where(r => r.VehicleId == vehicleId)
+            .OrderByDescending(r => r.CreatedAt)
+            .Select(r => r.PickUpForm)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        Form pickUpForm;
+        Form deliveryForm;
+        if (prevPickupForm is null)
+        {
+            var kilometer = await vehicleRepository
+                .Where(r => r.Id == request.VehicleId)
+                .Select(r => r.Kilometer)
+                .FirstAsync(cancellationToken);
+            List<Supply> supplies = new();
+            List<ImageUrl> imageUrls = new();
+            List<Damage> damages = new();
+            Note formNote = new(string.Empty);
+
+            pickUpForm = new(kilometer, supplies, imageUrls, damages, formNote);
+            // Explicitly set the collections using setter methods
+            pickUpForm.SetSupplies(supplies);
+            pickUpForm.SetImageUrls(imageUrls);
+            pickUpForm.SetDamages(damages);
+        }
+        else
+        {
+            var supplies = prevPickupForm.Supplies.ToList();
+            var damages = prevPickupForm.Damages.ToList();
+
+            pickUpForm = new(
+                prevPickupForm.Kilometer,
+                supplies,
+                [],
+                damages,
+                new(string.Empty)
+                );
+
+            // Explicitly set the collections using setter methods
+            pickUpForm.SetSupplies(supplies);
+            pickUpForm.SetImageUrls(new List<ImageUrl>());
+            pickUpForm.SetDamages(damages);
+
+            if (pickUpForm.Kilometer.Value == 0)
+            {
+                var kilometer = await vehicleRepository
+                .Where(r => r.Id == request.VehicleId)
+                .Select(r => r.Kilometer)
+                .FirstAsync(cancellationToken);
+                pickUpForm.SetKilometer(kilometer);
+            }
+        }
+
+        deliveryForm = new(
+            pickUpForm.Kilometer,
+            pickUpForm.Supplies.ToList(),
+            pickUpForm.ImageUrls.ToList(),
+            pickUpForm.Damages.ToList(),
+            pickUpForm.Note
+            );
+
+        // Set collections for delivery form as well
+        deliveryForm.SetSupplies(pickUpForm.Supplies.ToList());
+        deliveryForm.SetImageUrls(pickUpForm.ImageUrls.ToList());
+        deliveryForm.SetDamages(pickUpForm.Damages.ToList());
+
         Reservation reservation = Reservation.Create(
             customerId,
             pickUpLocationId,
@@ -172,7 +238,9 @@ public sealed class ReservationCreateCommandHandler(
             status,
             total,
             totalDay,
-            history
+            history,
+            pickUpForm,
+            deliveryForm
             );
         #endregion
 
@@ -185,6 +253,7 @@ public sealed class ReservationCreateCommandHandler(
             );
         reservation.SetHistory(history2);
         #endregion
+
         await reservationRepository.AddAsync(reservation, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

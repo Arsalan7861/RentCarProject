@@ -10,12 +10,7 @@
   [showIsActive]="false"
   commandColumnWidth="200px"
   [sort]="{field: 'pickUpDateTime', dir: 'asc'}"
-  [filter]="[{
-    field: 'status',
-    operator: 'eq',
-    value: 'Bekliyor',
-    type: 'select'
-  }]"
+  [filter]="[]"
 >
   <flexi-grid-column field="reservationNumber" title="Rez.Numarası" />
   <flexi-grid-column
@@ -74,14 +69,14 @@
     textAlign="right"
   />
 
-  <!-- <ng-template #columnCommandTemplate let-item>
+  <ng-template #columnCommandTemplate let-item>
     @if(item.status !== 'İptal Edildi'){
     <flexi-button
       btnColor="purple"
       btnIcon="assignment_add"
       btnSize="small"
       title="Teslim Etme Formu"
-      [routerLink]="['/form','pickup',item.id]"
+      [routerLink]="['/form',item.id,'pickup']"
     />
     } @if(item.status !== 'Bekliyor' && item.status !== 'İptal Edildi'){
     <flexi-button
@@ -89,8 +84,8 @@
       btnIcon="car_rental"
       btnSize="small"
       title="Teslim Alma Formu"
-      [routerLink]="['/form','delivery',item.id]"
+      [routerLink]="['/form',item.id, 'delivery']"
     />
     }
-  </ng-template> -->
+  </ng-template>
 </app-grid>

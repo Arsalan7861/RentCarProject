@@ -21,6 +21,11 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./pages/auth/reset-password/reset-password'),
   },
   {
+    path: 'form/:reservationId/:type',
+    loadComponent: () => import('./pages/reservations/forms/forms'),
+    // canActivate: [() => inject(Common).checkPermissionForRoute('form:view')],
+  },
+  {
     path: '',
     loadComponent: () => import('./pages/layouts/layouts'),
     canActivateChild: [authGuard],

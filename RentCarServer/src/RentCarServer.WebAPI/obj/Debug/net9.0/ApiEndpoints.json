@@ -1254,6 +1254,84 @@
     ]
   },
   {
+    "ContainingType": "RentCarServer.WebAPI.Controllers.ReservationFormsController",
+    "Method": "UpdateForm",
+    "RelativePath": "reservation-form",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ReservationId",
+        "Type": "System.Guid",
+        "IsRequired": false
+      },
+      {
+        "Name": "Type",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Kilometer",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ImageFiles",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Http.IFormFile, Microsoft.AspNetCore.Http.Features, Version=9.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Supplies",
+        "Type": "System.Collections.Generic.List\u00601[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Damages",
+        "Type": "System.Collections.Generic.List\u00601[[RentCarServer.Domain.Reservations.Forms.ValueObjects.Damage, RentCarServer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Note",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "RentCarServer.WebAPI.Modules.ReservationModule\u002B\u003C\u003Ec",
+    "Method": "\u003CMapReservationForm\u003Eb__1_0",
+    "RelativePath": "reservation-form/{reservationId}/{type}",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "reservationId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "type",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "TS.Result.Result\u00601[[RentCarServer.Application.Reservations.Froms.FormDto, RentCarServer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "ReservationForm"
+    ]
+  },
+  {
     "ContainingType": "RentCarServer.WebAPI.Modules.ReservationModule\u002B\u003C\u003Ec",
     "Method": "\u003CMapReservation\u003Eb__0_0",
     "RelativePath": "reservations/",

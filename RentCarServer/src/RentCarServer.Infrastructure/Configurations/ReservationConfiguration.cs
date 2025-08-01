@@ -26,5 +26,45 @@ internal sealed class ReservationConfiguration : IEntityTypeConfiguration<Reserv
         builder.OwnsOne(r => r.PickUpDateTime);
         builder.OwnsOne(r => r.DeliveryDateTime);
         builder.OwnsMany(r => r.Histories);
+        builder.OwnsOne(r => r.PickUpForm, form =>
+        {
+            form.OwnsOne(f => f.Kilometer);
+            form.OwnsMany(f => f.Supplies, s =>
+            {
+                s.ToTable("PickUpForm_Supplies");
+            });
+            form.OwnsMany(f => f.ImageUrls, i =>
+            {
+                i.ToTable("PickUpForm_ImageUrls");
+            });
+            form.OwnsMany(f => f.Damages, d =>
+            {
+                d.ToTable("PickUpForm_Damages");
+            });
+            form.OwnsOne(f => f.Note, n =>
+            {
+                n.ToTable("PickUpForm_Note");
+            });
+        });
+        builder.OwnsOne(r => r.DeliveryForm, form =>
+        {
+            form.OwnsOne(f => f.Kilometer);
+            form.OwnsMany(f => f.Supplies, s =>
+            {
+                s.ToTable("DeliveryForm_Supplies");
+            });
+            form.OwnsMany(f => f.ImageUrls, i =>
+            {
+                i.ToTable("DeliveryForm_ImageUrls");
+            });
+            form.OwnsMany(f => f.Damages, d =>
+            {
+                d.ToTable("DeliveryForm_Damages");
+            });
+            form.OwnsOne(f => f.Note, n =>
+            {
+                n.ToTable("DeliveryForm_Note");
+            });
+        });
     }
 }

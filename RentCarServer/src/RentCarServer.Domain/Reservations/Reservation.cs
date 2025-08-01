@@ -1,4 +1,5 @@
 ﻿using RentCarServer.Domain.Abstractions;
+using RentCarServer.Domain.Reservations.Forms;
 using RentCarServer.Domain.Reservations.ValueObjects;
 using RentCarServer.Domain.Shared;
 
@@ -28,7 +29,9 @@ public sealed class Reservation : Entity, IAggregate
         Status status,
         Total total,
         TotalDay totalDay,
-        ReservationHistory history
+        ReservationHistory history,
+        Form pickUpForm,
+        Form deliveryForm
         )
     {
         SetCustomerId(customerId);
@@ -51,12 +54,14 @@ public sealed class Reservation : Entity, IAggregate
         SetReservationExtras(reservationExtras);
         SetNote(note);
         SetPaymentInformation(paymentInformation);
-        SetStatus(status);
+        SetReservationStatus(status);
         SetTotal(total);
         SetPickUpDateTime();
         SetDeliveryDateTime();
         SetReservationNumber();
         SetHistory(history);
+        SetPickUpForm(pickUpForm);
+        SetDeliveryForm(deliveryForm);
     }
     public ReservationNumber ReservationNumber { get; private set; } = default!;
 
@@ -79,6 +84,8 @@ public sealed class Reservation : Entity, IAggregate
     public Status Status { get; private set; } = default!;
     public Total Total { get; private set; } = default!;
     public IReadOnlyCollection<ReservationHistory> Histories => _histories;
+    public Form PickUpForm { get; private set; } = default!;
+    public Form DeliveryForm { get; private set; } = default!;
 
     public static Reservation Create(
         IdentityId customerId,
@@ -97,7 +104,9 @@ public sealed class Reservation : Entity, IAggregate
         Status status,
         Total total,
         TotalDay totalDay,
-        ReservationHistory history
+        ReservationHistory history,
+        Form pickUpForm,
+        Form deliveryForm
         )
     {
         return new Reservation(
@@ -117,7 +126,9 @@ public sealed class Reservation : Entity, IAggregate
             status,
             total,
             totalDay,
-            history
+            history,
+            pickUpForm,
+            deliveryForm
             );
     }
     #region Behaviors
@@ -189,7 +200,7 @@ public sealed class Reservation : Entity, IAggregate
     {
         PaymentInformation = paymentInformation;
     }
-    public void SetStatus(Status status)
+    public void SetReservationStatus(Status status)
     {
         Status = status;
     }
@@ -205,10 +216,17 @@ public sealed class Reservation : Entity, IAggregate
         string number = "RSV-" + date.Year + "-" + reservationNumber;
         ReservationNumber = new(number);
     }
-
     public void SetHistory(ReservationHistory history)
     {
         _histories.Add(history);
+    }
+    public void SetPickUpForm(Form form)
+    {
+        PickUpForm = form;
+    }
+    public void SetDeliveryForm(Form form)
+    {
+        DeliveryForm = form;
     }
 
     #endregion

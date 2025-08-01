@@ -117,6 +117,7 @@ app.MapVehicle();
 //app.MapSeedData();
 app.MapCustomer();
 app.MapReservation();
+app.MapReservationForm();
 
 app.MapGet("/", () => "Hello").RequireAuthorization();
 //await app.CreateFirstUserAsync(); // Uygulama ilk çalıştığında ilk kullanıcıyı oluşturur, bu sayede veritabanında en az bir kullanıcı olur.
