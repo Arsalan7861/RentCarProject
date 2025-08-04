@@ -33,14 +33,18 @@ To set up the project locally, follow these steps:
    cd RentCarProject
    ```
 
-3. Open the solution file in Visual Studio.
+3. Open the **client-side** project in Visual Studio Code:
+   - Navigate to the client folder and open it with VS Code.
 
-4. Restore the dependencies:
+4. Open the **server-side** project in Visual Studio:
+   - Navigate to the server folder and open the solution file (.slnx) in Visual Studio.
+
+5. Restore the dependencies for the server-side:
    ```bash
    dotnet restore
    ```
 
-5. Run the application:
+6. Run the server-side application:
    ```bash
    dotnet run
    ```
