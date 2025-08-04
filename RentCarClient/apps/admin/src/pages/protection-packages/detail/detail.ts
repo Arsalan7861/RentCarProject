@@ -15,8 +15,8 @@ import Blank from 'apps/admin/src/components/blank/blank';
 import {
   initialProtectionPackage,
   ProtectionPackageModel,
-} from 'apps/admin/src/models/protection-package.model';
-import { Result } from 'apps/admin/src/models/result.model';
+} from 'libraries/shared/src/lib/models/protection-package.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,

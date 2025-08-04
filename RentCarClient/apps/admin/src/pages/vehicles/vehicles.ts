@@ -18,9 +18,9 @@ import {
   transmissionList,
 } from './create/create';
 import { httpResource } from '@angular/common/http';
-import { CategoryModel } from '../../models/category.model';
-import { BranchModel } from '../../models/branch.model';
-import { ODataModel } from '../../models/odata.model';
+import { CategoryModel } from '../../../../../libraries/shared/src/lib/models/category.model';
+import { BranchModel } from '../../../../../libraries/shared/src/lib/models/branch.model';
+import { ODataModel } from '../../../../../libraries/shared/src/lib/models/odata.model';
 
 @Component({
   imports: [Grid, FlexiGridModule],

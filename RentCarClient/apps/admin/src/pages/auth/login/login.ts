@@ -9,11 +9,11 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Result } from '../../../models/result.model';
+import { Result } from '../../../../../../libraries/shared/src/lib/models/result.model';
 import { Router } from '@angular/router';
 import { FormValidateDirective } from 'form-validate-angular';
 import { CommonModule } from '@angular/common';
-import { HttpService } from '../../../services/http';
+import { HttpService } from '../../../../../../libraries/shared/src/lib/services/http';
 import { FlexiToastService } from 'flexi-toast';
 
 @Component({

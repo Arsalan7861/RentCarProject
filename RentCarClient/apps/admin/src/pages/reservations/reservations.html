@@ -76,7 +76,7 @@
       btnIcon="assignment_add"
       btnSize="small"
       title="Teslim Etme Formu"
-      [routerLink]="['/form',item.id,'pickup']"
+      [routerLink]="['/form','pickup',item.id]"
     />
     } @if(item.status !== 'Bekliyor' && item.status !== 'İptal Edildi'){
     <flexi-button
@@ -84,7 +84,7 @@
       btnIcon="car_rental"
       btnSize="small"
       title="Teslim Alma Formu"
-      [routerLink]="['/form',item.id, 'delivery']"
+      [routerLink]="['/form','delivery', item.id]"
     />
     }
   </ng-template>

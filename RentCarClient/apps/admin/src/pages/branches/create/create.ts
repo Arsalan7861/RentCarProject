@@ -24,7 +24,10 @@ import { HttpService } from 'apps/admin/src/services/http';
 import { FlexiToastService } from 'flexi-toast';
 import { NgxMaskDirective } from 'ngx-mask';
 import { lastValueFrom } from 'rxjs';
-import { BranchModel, initialBranch } from 'apps/admin/src/models/branch.model';
+import {
+  BranchModel,
+  initialBranch,
+} from 'libraries/shared/src/lib/models/branch.model';
 import { httpResource } from '@angular/common/http';
 import { FlexiSelectModule } from 'flexi-select';
 

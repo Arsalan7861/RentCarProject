@@ -10,13 +10,16 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Result } from 'apps/admin/src/models/result.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
 } from 'apps/admin/src/services/breadcrumb';
 import Blank from 'apps/admin/src/components/blank/blank';
-import { CustomerModel, initialCustomerModel } from 'apps/admin/src/models/customer.model';
+import {
+  CustomerModel,
+  initialCustomerModel,
+} from 'libraries/shared/src/lib/models/customer.model';
 import { NgxMaskPipe } from 'ngx-mask';
 import { DatePipe } from '@angular/common';
 
@@ -33,9 +36,11 @@ export default class Detail {
   readonly result = httpResource<Result<CustomerModel>>(
     () => `/rent/customers/${this.id()}`
   );
-  readonly data = computed(() => this.result.value()?.data ?? initialCustomerModel);
+  readonly data = computed(
+    () => this.result.value()?.data ?? initialCustomerModel
+  );
   readonly loading = computed(() => this.result.isLoading());
-  readonly pageTitle = signal("Müşteri Detay");
+  readonly pageTitle = signal('Müşteri Detay');
 
   readonly #activated = inject(ActivatedRoute);
   readonly #breadcrumb = inject(BreadcrumbService);

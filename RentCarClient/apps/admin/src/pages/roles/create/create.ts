@@ -22,7 +22,10 @@ import { FormValidateDirective } from 'form-validate-angular';
 import { HttpService } from 'apps/admin/src/services/http';
 import { FlexiToastService } from 'flexi-toast';
 import { lastValueFrom } from 'rxjs';
-import { initialRole, RoleModel } from 'apps/admin/src/models/role.model';
+import {
+  initialRole,
+  RoleModel,
+} from 'libraries/shared/src/lib/models/role.model';
 
 @Component({
   imports: [Blank, FormsModule, FormValidateDirective, NgClass],

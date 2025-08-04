@@ -15,21 +15,21 @@ import {
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Blank from 'apps/admin/src/components/blank/blank';
-import { BranchModel } from 'apps/admin/src/models/branch.model';
-import { CategoryModel } from 'apps/admin/src/models/category.model';
+import { BranchModel } from 'libraries/shared/src/lib/models/branch.model';
+import { CategoryModel } from 'libraries/shared/src/lib/models/category.model';
 import {
   CustomerModel,
   initialCustomerModel,
-} from 'apps/admin/src/models/customer.model';
-import { ODataModel } from 'apps/admin/src/models/odata.model';
+} from 'libraries/shared/src/lib/models/customer.model';
+import { ODataModel } from 'libraries/shared/src/lib/models/odata.model';
 import {
   initialReservation,
   ReservationModel,
-} from 'apps/admin/src/models/reservation.model';
+} from 'libraries/shared/src/lib/models/reservation.model';
 import {
   initialVehicleModel,
   VehicleModel,
-} from 'apps/admin/src/models/vehicle.model';
+} from 'libraries/shared/src/lib/models/vehicle.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
@@ -46,8 +46,8 @@ import { lastValueFrom } from 'rxjs';
 import { TrCurrencyPipe } from 'tr-currency';
 import { fuelTypeList, transmissionList } from '../../vehicles/create/create';
 import { VehiclePipe } from 'apps/admin/src/pipes/vehicle-pipe';
-import { ProtectionPackageModel } from 'apps/admin/src/models/protection-package.model';
-import { ExtraModel } from 'apps/admin/src/models/extra.model';
+import { ProtectionPackageModel } from 'libraries/shared/src/lib/models/protection-package.model';
+import { ExtraModel } from 'libraries/shared/src/lib/models/extra.model';
 
 @Component({
   imports: [

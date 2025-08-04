@@ -20,7 +20,7 @@ public sealed record FormUpdateCommand(
     List<IFormFile> ImageFiles,
     List<string>? Supplies,
     List<Damage>? Damages,
-    string Note
+    string? Note
     ) : IRequest<Result<string>>;
 
 internal sealed class FormUpdateCommandHandler(
@@ -48,7 +48,7 @@ internal sealed class FormUpdateCommandHandler(
 
         Form form;
         string message;
-        if (request.Type.ToLower() == "pickup")
+        if (request.Type == "pickup")
         {
             form = reservation.PickUpForm;
             message = "Araç müşteriye teslim edildi.";

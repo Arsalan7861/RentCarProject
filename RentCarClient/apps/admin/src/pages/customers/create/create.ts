@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-var */
 /* eslint-disable @nx/enforce-module-boundaries */
 import {
@@ -25,11 +26,26 @@ import { FlexiSelectModule } from 'flexi-select';
 import {
   CustomerModel,
   initialCustomerModel,
-} from 'apps/admin/src/models/customer.model';
+} from 'libraries/shared/src/lib/models/customer.model';
 import { DatePipe } from '@angular/common';
+import { NgxMaskDirective } from 'ngx-mask';
+import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
+
+Chart.register(...registerables);
+
+interface ChartData {
+  data: any[];
+  borderColor: string[];
+}
 
 @Component({
-  imports: [Blank, FormsModule, FormValidateDirective, FlexiSelectModule],
+  imports: [
+    Blank,
+    FormsModule,
+    FormValidateDirective,
+    FlexiSelectModule,
+    NgxMaskDirective,
+  ],
   templateUrl: './create.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

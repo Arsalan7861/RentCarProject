@@ -6,14 +6,10 @@ import {
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
-import {
-  HttpContextToken,
-  provideHttpClient,
-  withInterceptors,
-} from '@angular/common/http';
-import { httpInterceptor } from './interceptors/http-interceptor';
-import { errorInterceptor } from './interceptors/error-interceptor';
-import { authInterceptor } from './interceptors/auth-interceptor';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { httpInterceptor } from '@shared/lib/interceptors/http-interceptor';
+import { errorInterceptor } from '@shared/lib/interceptors/error-interceptor';
+import { authInterceptor } from '@shared/lib/interceptors/auth-interceptor';
 import { provideNgxMask } from 'ngx-mask';
 import localTr from '@angular/common/locales/tr';
 import { registerLocaleData } from '@angular/common';

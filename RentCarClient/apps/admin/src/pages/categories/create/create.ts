@@ -24,7 +24,7 @@ import { lastValueFrom } from 'rxjs';
 import {
   initialCategory,
   CategoryModel,
-} from 'apps/admin/src/models/category.model';
+} from 'libraries/shared/src/lib/models/category.model';
 
 @Component({
   imports: [Blank, FormsModule, FormValidateDirective, NgClass],

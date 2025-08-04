@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @nx/enforce-module-boundaries */
 import { DatePipe, Location } from '@angular/common';
@@ -6,7 +7,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   ElementRef,
   inject,
   linkedSignal,
@@ -17,8 +17,11 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import Loading from 'apps/admin/src/components/loading/loading';
-import { FormModel, initialFormModel } from 'apps/admin/src/models/form.model';
-import { Result } from 'apps/admin/src/models/result.model';
+import {
+  FormModel,
+  initialFormModel,
+} from 'libraries/shared/src/lib/models/form.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import { HttpService } from 'apps/admin/src/services/http';
 import { FlexiGridModule } from 'flexi-grid';
 import { FlexiToastService } from 'flexi-toast';
@@ -133,10 +136,7 @@ export default class Forms {
   }
 
   openFileInput() {
-    const fileInputRef = this.fileInput();
-    if (fileInputRef) {
-      fileInputRef.nativeElement.click();
-    }
+    this.fileInput()!.nativeElement.click();
   }
 
   onFileSelected(event: Event) {
@@ -204,29 +204,20 @@ export default class Forms {
     formData.append('Kilometer', this.data().kilometer.toString());
 
     // Add files with correct field name expected by backend
-    this.data().files.forEach((val: Blob) => {
-      if (val instanceof File) {
-        formData.append('ImageFiles', val, val.name);
-      } else {
-        formData.append('ImageFiles', val);
-      }
+    this.data().files.forEach((val) => {
+      formData.append('ImageFiles', val, val.name);
     });
 
-    this.data().supplies.forEach((val: string | Blob) => {
+    this.data().supplies.forEach((val) => {
       formData.append('Supplies', val);
     });
 
-    this.data().damages.forEach(
-      (
-        val: { level: string | Blob; description: string | Blob },
-        index: any
-      ) => {
-        formData.append(`Damages[${index}].level`, val.level);
-        formData.append(`Damages[${index}].description`, val.description);
-      }
-    );
+    this.data().damages.forEach((val, index) => {
+      formData.append(`Damages[${index}].level`, val.level);
+      formData.append(`Damages[${index}].description`, val.description);
+    });
 
-    formData.append('Note', this.data().note ?? ' ');
+    formData.append('Note', this.data().note);
 
     this.loading.set(true);
     this.#http.put<string>(

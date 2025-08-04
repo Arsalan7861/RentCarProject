@@ -22,11 +22,14 @@ import { FormValidateDirective } from 'form-validate-angular';
 import { HttpService } from 'apps/admin/src/services/http';
 import { FlexiToastService } from 'flexi-toast';
 import { lastValueFrom } from 'rxjs';
-import { initialUser, UserModel } from 'apps/admin/src/models/user.model';
+import {
+  initialUser,
+  UserModel,
+} from 'libraries/shared/src/lib/models/user.model';
 import { httpResource } from '@angular/common/http';
-import { ODataModel } from 'apps/admin/src/models/odata.model';
-import { BranchModel } from 'apps/admin/src/models/branch.model';
-import { RoleModel } from 'apps/admin/src/models/role.model';
+import { ODataModel } from 'libraries/shared/src/lib/models/odata.model';
+import { BranchModel } from 'libraries/shared/src/lib/models/branch.model';
+import { RoleModel } from 'libraries/shared/src/lib/models/role.model';
 import { FlexiSelectModule } from 'flexi-select';
 import { Common } from 'apps/admin/src/services/common';
 
@@ -101,7 +104,11 @@ export default class Create {
     if (this.checkIsAdmin()) {
       return this.roleResult.value()?.value ?? [];
     }
-    return this.roleResult.value()?.value.filter((role) => role.name !== 'sys_admin') ?? [];
+    return (
+      this.roleResult
+        .value()
+        ?.value.filter((role) => role.name !== 'sys_admin') ?? []
+    );
   });
   readonly roleLoading = computed(() => this.roleResult.isLoading());
 

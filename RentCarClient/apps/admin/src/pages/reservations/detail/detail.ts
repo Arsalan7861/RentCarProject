@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrCurrencyPipe } from 'tr-currency';
-import { Result } from 'apps/admin/src/models/result.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
@@ -20,7 +20,7 @@ import Blank from 'apps/admin/src/components/blank/blank';
 import {
   ReservationModel,
   initialReservation,
-} from 'apps/admin/src/models/reservation.model';
+} from 'libraries/shared/src/lib/models/reservation.model';
 import { DatePipe, NgClass } from '@angular/common';
 import { NgxMaskPipe } from 'ngx-mask';
 

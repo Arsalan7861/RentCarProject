@@ -10,13 +10,16 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Result } from 'apps/admin/src/models/result.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
 } from 'apps/admin/src/services/breadcrumb';
 import Blank from 'apps/admin/src/components/blank/blank';
-import { BranchModel, initialBranch } from 'apps/admin/src/models/branch.model';
+import {
+  BranchModel,
+  initialBranch,
+} from 'libraries/shared/src/lib/models/branch.model';
 import { NgxMaskPipe } from 'ngx-mask';
 
 @Component({

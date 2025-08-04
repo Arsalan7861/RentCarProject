@@ -5,8 +5,8 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ErrorService } from './error';
-import { Result } from '../models/result.model';
+import { ErrorService } from '../../../../libraries/shared/src/lib/services/error';
+import { Result } from '../../../../libraries/shared/src/lib/models/result.model';
 
 export const SKIP_ERROR_HANDLER = new HttpContextToken<boolean>(() => false); // Default value is false, meaning error handling is enabled by default
 

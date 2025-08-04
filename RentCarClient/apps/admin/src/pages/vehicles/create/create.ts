@@ -1,15 +1,32 @@
 /* eslint-disable @nx/enforce-module-boundaries */
 import { NgClass, DatePipe } from '@angular/common';
 import { httpResource } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, resource, signal, ViewEncapsulation, ElementRef, viewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  linkedSignal,
+  resource,
+  signal,
+  ViewEncapsulation,
+  ElementRef,
+  viewChild,
+} from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Blank from 'apps/admin/src/components/blank/blank';
-import { BranchModel } from 'apps/admin/src/models/branch.model';
-import { CategoryModel } from 'apps/admin/src/models/category.model';
-import { ODataModel } from 'apps/admin/src/models/odata.model';
-import { VehicleModel, initialVehicleModel } from 'apps/admin/src/models/vehicle.model';
-import { BreadcrumbModel, BreadcrumbService } from 'apps/admin/src/services/breadcrumb';
+import { BranchModel } from 'libraries/shared/src/lib/models/branch.model';
+import { CategoryModel } from 'libraries/shared/src/lib/models/category.model';
+import { ODataModel } from 'libraries/shared/src/lib/models/odata.model';
+import {
+  VehicleModel,
+  initialVehicleModel,
+} from 'libraries/shared/src/lib/models/vehicle.model';
+import {
+  BreadcrumbModel,
+  BreadcrumbService,
+} from 'apps/admin/src/services/breadcrumb';
 import { HttpService } from 'apps/admin/src/services/http';
 import { FlexiSelectModule } from 'flexi-select';
 import { FlexiToastService } from 'flexi-toast';
@@ -18,50 +35,41 @@ import { NgxMaskDirective } from 'ngx-mask';
 import { lastValueFrom } from 'rxjs';
 
 export interface FeatureGroup {
-    group: string;
-    features: { key: string; label: string; icon: string }[];
+  group: string;
+  features: { key: string; label: string; icon: string }[];
 }
 
 export const brandList = [
-    'Toyota',
-    'Renault',
-    'Volkswagen',
-    'Ford', 'Fiat',
-    'Hyundai',
-    'Peugeot',
-    'Opel',
-    'Honda',
-    'BMW'
-  ];
+  'Toyota',
+  'Renault',
+  'Volkswagen',
+  'Ford',
+  'Fiat',
+  'Hyundai',
+  'Peugeot',
+  'Opel',
+  'Honda',
+  'BMW',
+];
 
-  export const colorList = [
-    'Beyaz',
-    'Siyah',
-    'Gri',
-    'Kırmızı',
-    'Mavi',
-    'Yeşil',
-    'Sarı',
-    'Turuncu',
-    'Kahverengi',
-    'Mor'
-  ];
+export const colorList = [
+  'Beyaz',
+  'Siyah',
+  'Gri',
+  'Kırmızı',
+  'Mavi',
+  'Yeşil',
+  'Sarı',
+  'Turuncu',
+  'Kahverengi',
+  'Mor',
+];
 
-  export const fuelTypeList = [
-    'Benzin',
-    'Dizel',
-    'LPG',
-    'Elektrik',
-    'Hibrit'
-  ];
+export const fuelTypeList = ['Benzin', 'Dizel', 'LPG', 'Elektrik', 'Hibrit'];
 
-  export const transmissionList = [
-    'Manuel',
-    'Otomatik',
-    'CVT'
-  ];
+export const transmissionList = ['Manuel', 'Otomatik', 'CVT'];
 
-  export const modelYearList = Array.from({length: 16}, (_, i) => 2010 + i);
+export const modelYearList = Array.from({ length: 16 }, (_, i) => 2010 + i);
 
 @Component({
   imports: [
@@ -70,12 +78,12 @@ export const brandList = [
     FormValidateDirective,
     NgClass,
     NgxMaskDirective,
-    FlexiSelectModule
+    FlexiSelectModule,
   ],
   templateUrl: './create.html',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export default class CreateVehicle {
   readonly id = signal<string | undefined>(undefined);
@@ -83,14 +91,14 @@ export default class CreateVehicle {
     {
       title: 'Araçlar',
       icon: 'bi-car-front',
-      url: '/vehicles'
-    }
+      url: '/vehicles',
+    },
   ]);
   readonly brandList = computed(() => brandList);
   readonly modelYearList = computed(() => modelYearList);
   readonly colorList = computed(() => colorList);
-  readonly fuelTypeList = (() => fuelTypeList);
-  readonly transmissionList = (() => transmissionList);
+  readonly fuelTypeList = () => fuelTypeList;
+  readonly transmissionList = () => transmissionList;
 
   readonly seatCountList = [
     { value: 2, label: '2 Kişi' },
@@ -98,7 +106,7 @@ export default class CreateVehicle {
     { value: 5, label: '5 Kişi' },
     { value: 7, label: '7 Kişi' },
     { value: 8, label: '8 Kişi' },
-    { value: 9, label: '9+ Kişi' }
+    { value: 9, label: '9+ Kişi' },
   ];
 
   readonly featureGroups: FeatureGroup[] = [
@@ -108,99 +116,132 @@ export default class CreateVehicle {
         { key: 'Airbag', label: 'Airbag', icon: 'bi-shield' },
         { key: 'ABS', label: 'ABS', icon: 'bi-shield-exclamation' },
         { key: 'ESP', label: 'ESP', icon: 'bi-shield-check' },
-        { key: 'Alarm Sistemi', label: 'Alarm Sistemi', icon: 'bi-bell' }
-      ]
+        { key: 'Alarm Sistemi', label: 'Alarm Sistemi', icon: 'bi-bell' },
+      ],
     },
     {
       group: 'Sürüş Destekleri',
       features: [
         { key: 'GPS Navigasyon', label: 'GPS Navigasyon', icon: 'bi-geo-alt' },
-        { key: 'Park Sensörü', label: 'Park Sensörü', icon: 'bi-broadcast-pin' },
-        { key: 'Geri Görüş Kamerası', label: 'Geri Görüş Kamerası', icon: 'bi-camera-video' },
-        { key: 'Cruise Control', label: 'Cruise Control', icon: 'bi-speedometer2' }
-      ]
+        {
+          key: 'Park Sensörü',
+          label: 'Park Sensörü',
+          icon: 'bi-broadcast-pin',
+        },
+        {
+          key: 'Geri Görüş Kamerası',
+          label: 'Geri Görüş Kamerası',
+          icon: 'bi-camera-video',
+        },
+        {
+          key: 'Cruise Control',
+          label: 'Cruise Control',
+          icon: 'bi-speedometer2',
+        },
+      ],
     },
     {
       group: 'Konfor Özellikleri',
       features: [
         { key: 'Klima', label: 'Klima', icon: 'bi-snow' },
-        { key: 'Isıtmalı Koltuk', label: 'Isıtmalı Koltuk', icon: 'bi-thermometer-half' },
+        {
+          key: 'Isıtmalı Koltuk',
+          label: 'Isıtmalı Koltuk',
+          icon: 'bi-thermometer-half',
+        },
         { key: 'Sunroof', label: 'Sunroof', icon: 'bi-brightness-high' },
-        { key: 'Bluetooth', label: 'Bluetooth', icon: 'bi-bluetooth' }
-      ]
+        { key: 'Bluetooth', label: 'Bluetooth', icon: 'bi-bluetooth' },
+      ],
     },
     {
       group: 'Multimedya',
       features: [
-        { key: 'Dokunmatik Ekran', label: 'Dokunmatik Ekran', icon: 'bi-tablet' },
+        {
+          key: 'Dokunmatik Ekran',
+          label: 'Dokunmatik Ekran',
+          icon: 'bi-tablet',
+        },
         { key: 'USB Bağlantısı', label: 'USB Bağlantısı', icon: 'bi-usb' },
-        { key: 'Premium Ses Sistemi', label: 'Premium Ses Sistemi', icon: 'bi-music-note-beamed' },
-        { key: 'Apple CarPlay', label: 'Apple CarPlay', icon: 'bi-phone' }
-      ]
-    }
+        {
+          key: 'Premium Ses Sistemi',
+          label: 'Premium Ses Sistemi',
+          icon: 'bi-music-note-beamed',
+        },
+        { key: 'Apple CarPlay', label: 'Apple CarPlay', icon: 'bi-phone' },
+      ],
+    },
   ];
 
-  readonly insuranceTypeList = signal<string[]>([
-    'Kasko & Sigorta',
-    'Sigorta'
-  ]);
+  readonly insuranceTypeList = signal<string[]>(['Kasko & Sigorta', 'Sigorta']);
 
   readonly tractionTypeList = [
     'Önden Çekiş',
     'Arkadan İtiş',
     '4x4',
     'AWD',
-    'Diğer'
+    'Diğer',
   ];
 
-  readonly tireStatusList = [
-    'Yeni',
-    'İyi',
-    'Orta',
-    'Zayıf',
-    'Değişmeli'
-  ];
+  readonly tireStatusList = ['Yeni', 'İyi', 'Orta', 'Zayıf', 'Değişmeli'];
 
   readonly generalStatusList = [
     'Çok İyi',
     'İyi',
     'Orta',
     'Bakım Gerekli',
-    'Hasarlı'
+    'Hasarlı',
   ];
 
-  readonly pageTitle = computed(() => this.id() ? 'Araç Güncelle' : 'Araç Ekle');
-  readonly pageIcon = computed(() => this.id() ? 'bi-pen' : 'bi-plus');
-  readonly btnName = computed(() => this.id() ? 'Güncelle' : 'Kaydet');
+  readonly pageTitle = computed(() =>
+    this.id() ? 'Araç Güncelle' : 'Araç Ekle'
+  );
+  readonly pageIcon = computed(() => (this.id() ? 'bi-pen' : 'bi-plus'));
+  readonly btnName = computed(() => (this.id() ? 'Güncelle' : 'Kaydet'));
   readonly result = resource({
     params: () => this.id(),
     loader: async () => {
       if (!this.id()) return null;
-      const res = await lastValueFrom(this.#http.getResource<VehicleModel>(`/rent/vehicles/${this.id()}`));
-      this.bredcrumbs.update(prev => [...prev, {
-        title: res.data!.brand + ' ' + res.data!.model,
-        icon: 'bi-pen',
-        url: `/vehicles/edit/${this.id()}`,
-        isActive: true
-      }]);
+      const res = await lastValueFrom(
+        this.#http.getResource<VehicleModel>(`/rent/vehicles/${this.id()}`)
+      );
+      this.bredcrumbs.update((prev) => [
+        ...prev,
+        {
+          title: res.data!.brand + ' ' + res.data!.model,
+          icon: 'bi-pen',
+          url: `/vehicles/edit/${this.id()}`,
+          isActive: true,
+        },
+      ]);
       this.#breadcrumb.reset(this.bredcrumbs());
       return res.data;
-    }
+    },
   });
-  readonly data = linkedSignal(() => this.result.value() ?? { ...initialVehicleModel });
+  readonly data = linkedSignal(
+    () => this.result.value() ?? { ...initialVehicleModel }
+  );
   readonly loading = linkedSignal(() => this.result.isLoading());
-  readonly categoryResource = httpResource<ODataModel<CategoryModel>>(() => '/rent/odata/categories');
-  readonly categoryList = computed(() => this.categoryResource.value()?.value ?? []);
+  readonly categoryResource = httpResource<ODataModel<CategoryModel>>(
+    () => '/rent/odata/categories'
+  );
+  readonly categoryList = computed(
+    () => this.categoryResource.value()?.value ?? []
+  );
   readonly categoryLoading = computed(() => this.categoryResource.isLoading());
 
-  readonly branchResource = httpResource<ODataModel<BranchModel>>(() => '/rent/odata/branches');
-  readonly branchList = computed(() => this.branchResource.value()?.value ?? []);
+  readonly branchResource = httpResource<ODataModel<BranchModel>>(
+    () => '/rent/odata/branches'
+  );
+  readonly branchList = computed(
+    () => this.branchResource.value()?.value ?? []
+  );
   readonly branchLoading = computed(() => this.branchResource.isLoading());
   featuresInput = '';
   readonly file = signal<any | undefined>(undefined);
   readonly fileData = signal<string | undefined>(undefined);
 
-  readonly fileInput = viewChild.required<ElementRef<HTMLInputElement>>('fileInput');
+  readonly fileInput =
+    viewChild.required<ElementRef<HTMLInputElement>>('fileInput');
   dragOver = false;
 
   readonly #breadcrumb = inject(BreadcrumbService);
@@ -211,25 +252,28 @@ export default class CreateVehicle {
   readonly #date = inject(DatePipe);
 
   constructor() {
-    this.#activated.params.subscribe(res => {
+    this.#activated.params.subscribe((res) => {
       if (res['id']) {
         this.id.set(res['id']);
       } else {
-        this.bredcrumbs.update(prev => [...prev, {
-          title: 'Ekle',
-          icon: 'bi-plus',
-          url: '/vehicles/add',
-          isActive: true
-        }]);
+        this.bredcrumbs.update((prev) => [
+          ...prev,
+          {
+            title: 'Ekle',
+            icon: 'bi-plus',
+            url: '/vehicles/add',
+            isActive: true,
+          },
+        ]);
         this.#breadcrumb.reset(this.bredcrumbs());
 
-        const date = this.#date.transform(new Date(),"yyyy-MM-dd")!;
-        this.data.update(prev => ({
-            ...prev,
-            cascoEndDate: date,
-            inspectionDate: date,
-            insuranceEndDate: date,
-            lastMaintenanceDate: date,
+        const date = this.#date.transform(new Date(), 'yyyy-MM-dd')!;
+        this.data.update((prev) => ({
+          ...prev,
+          cascoEndDate: date,
+          inspectionDate: date,
+          insuranceEndDate: date,
+          lastMaintenanceDate: date,
         }));
       }
     });
@@ -264,12 +308,24 @@ export default class CreateVehicle {
     formData.append('SeatCount', d.seatCount?.toString() ?? '0');
     formData.append('Kilometer', d.kilometer?.toString() ?? '0');
     formData.append('DailyPrice', d.dailyPrice?.toString() ?? '0');
-    formData.append('WeeklyDiscountRate', d.weeklyDiscountRate?.toString() ?? '0');
-    formData.append('MonthlyDiscountRate', d.monthlyDiscountRate?.toString() ?? '0');
+    formData.append(
+      'WeeklyDiscountRate',
+      d.weeklyDiscountRate?.toString() ?? '0'
+    );
+    formData.append(
+      'MonthlyDiscountRate',
+      d.monthlyDiscountRate?.toString() ?? '0'
+    );
     formData.append('InsuranceType', d.insuranceType);
     formData.append('LastMaintenanceDate', d.lastMaintenanceDate);
-    formData.append('LastMaintenanceKm', d.lastMaintenanceKm?.toString() ?? '0');
-    formData.append('NextMaintenanceKm', d.nextMaintenanceKm?.toString() ?? '0');
+    formData.append(
+      'LastMaintenanceKm',
+      d.lastMaintenanceKm?.toString() ?? '0'
+    );
+    formData.append(
+      'NextMaintenanceKm',
+      d.nextMaintenanceKm?.toString() ?? '0'
+    );
     formData.append('InspectionDate', d.inspectionDate);
     formData.append('InsuranceEndDate', d.insuranceEndDate);
     formData.append('CascoEndDate', d.cascoEndDate);
@@ -279,12 +335,12 @@ export default class CreateVehicle {
 
     // Features (array)
     if (d.features && d.features.length > 0) {
-      d.features.forEach(f => formData.append('Features', f));
+      d.features.forEach((f) => formData.append('Features', f));
     }
 
     // Resim dosyası (fileInput ile seçilen dosya)
     if (this.file()) {
-      formData.append('File', this.file(),this.file().name);
+      formData.append('File', this.file(), this.file().name);
     }
 
     // Güncellemede Id ekle
@@ -295,34 +351,40 @@ export default class CreateVehicle {
     const endpoint = this.id() ? '/rent/vehicles' : '/rent/vehicles';
     const method = this.id() ? this.#http.put<string> : this.#http.post<string>;
 
-    method.call(this.#http, endpoint, formData, res => {
-      this.#toast.showToast("Başarılı", res, this.id() ? "info" : "success");
-      this.#router.navigateByUrl("/vehicles");
-      this.loading.set(false);
-    }, () => this.loading.set(false));
+    method.call(
+      this.#http,
+      endpoint,
+      formData,
+      (res) => {
+        this.#toast.showToast('Başarılı', res, this.id() ? 'info' : 'success');
+        this.#router.navigateByUrl('/vehicles');
+        this.loading.set(false);
+      },
+      () => this.loading.set(false)
+    );
   }
 
   changeStatus(status: boolean) {
-    this.data.update(prev => ({
+    this.data.update((prev) => ({
       ...prev,
-      isActive: status
+      isActive: status,
     }));
   }
 
   addFeature() {
     if (this.featuresInput.trim()) {
-      this.data.update(prev => ({
+      this.data.update((prev) => ({
         ...prev,
-        features: [...prev.features, this.featuresInput.trim()]
+        features: [...prev.features, this.featuresInput.trim()],
       }));
       this.featuresInput = '';
     }
   }
 
   removeFeature(index: number) {
-    this.data.update(prev => ({
+    this.data.update((prev) => ({
       ...prev,
-      features: prev.features.filter((_, i) => i !== index)
+      features: prev.features.filter((_, i) => i !== index),
     }));
   }
 
@@ -339,10 +401,10 @@ export default class CreateVehicle {
       this.file.set(file);
       const reader = new FileReader();
       reader.onload = () => {
-        this.fileData.set(reader.result as string)
-        this.data.update(prev => ({
+        this.fileData.set(reader.result as string);
+        this.data.update((prev) => ({
           ...prev,
-          imageUrl: ''
+          imageUrl: '',
         }));
       };
       reader.readAsDataURL(file);
@@ -368,10 +430,10 @@ export default class CreateVehicle {
       this.file.set(file);
       const reader = new FileReader();
       reader.onload = () => {
-        this.fileData.set(reader.result as string)
-        this.data.update(prev => ({
+        this.fileData.set(reader.result as string);
+        this.data.update((prev) => ({
           ...prev,
-          imageUrl: ''
+          imageUrl: '',
         }));
       };
       reader.readAsDataURL(file);
@@ -384,14 +446,14 @@ export default class CreateVehicle {
   toggleFeature(feature: string) {
     const features = this.data().features;
     if (features.includes(feature)) {
-      this.data.update(prev => ({
+      this.data.update((prev) => ({
         ...prev,
-        features: prev.features.filter(f => f !== feature)
+        features: prev.features.filter((f) => f !== feature),
       }));
     } else {
-      this.data.update(prev => ({
+      this.data.update((prev) => ({
         ...prev,
-        features: [...prev.features, feature]
+        features: [...prev.features, feature],
       }));
     }
   }
@@ -401,13 +463,13 @@ export default class CreateVehicle {
     return this.data().features.includes(feature);
   }
 
-  showImageUrl(){
-    if(this.fileData()){
-        return this.fileData()
-    }else if(this.data().imageUrl){
-        return `https://localhost:7033/images/${this.data().imageUrl}`
-    }else{
-        return '/no-noimage.png'
+  showImageUrl() {
+    if (this.fileData()) {
+      return this.fileData();
+    } else if (this.data().imageUrl) {
+      return `https://localhost:7033/images/${this.data().imageUrl}`;
+    } else {
+      return '/no-noimage.png';
     }
   }
 }

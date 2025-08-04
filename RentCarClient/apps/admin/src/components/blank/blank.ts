@@ -8,7 +8,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { EntityModel } from '../../models/entity.model';
+import { EntityModel } from '../../../../../libraries/shared/src/lib/models/entity.model';
 import { FormsModule } from '@angular/forms';
 import Loading from '../loading/loading';
 

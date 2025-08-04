@@ -10,13 +10,16 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Result } from 'apps/admin/src/models/result.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
 } from 'apps/admin/src/services/breadcrumb';
 import Blank from 'apps/admin/src/components/blank/blank';
-import { initialUser, UserModel } from 'apps/admin/src/models/user.model';
+import {
+  initialUser,
+  UserModel,
+} from 'libraries/shared/src/lib/models/user.model';
 
 @Component({
   imports: [Blank],
@@ -33,7 +36,7 @@ export default class Detail {
   );
   readonly data = computed(() => this.result.value()?.data ?? initialUser);
   readonly loading = computed(() => this.result.isLoading());
-  readonly pageTitle = signal("Kullanıcı Detay");
+  readonly pageTitle = signal('Kullanıcı Detay');
 
   readonly #activated = inject(ActivatedRoute);
   readonly #breadcrumb = inject(BreadcrumbService);

@@ -1,5 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { DecodeModel, initialDecode } from '../models/decode.model';
+import {
+  DecodeModel,
+  initialDecode,
+} from '../../../../libraries/shared/src/lib/models/decode.model';
 import { Router } from '@angular/router';
 
 @Injectable({

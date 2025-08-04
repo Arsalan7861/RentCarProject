@@ -11,13 +11,16 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TrCurrencyPipe } from 'tr-currency';
-import { Result } from 'apps/admin/src/models/result.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
 } from 'apps/admin/src/services/breadcrumb';
 import Blank from 'apps/admin/src/components/blank/blank';
-import { initialExtra, ExtraModel } from 'apps/admin/src/models/extra.model';
+import {
+  initialExtra,
+  ExtraModel,
+} from 'libraries/shared/src/lib/models/extra.model';
 
 @Component({
   imports: [Blank, TrCurrencyPipe],

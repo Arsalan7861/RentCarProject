@@ -23,7 +23,10 @@ import { HttpService } from 'apps/admin/src/services/http';
 import { FlexiToastService } from 'flexi-toast';
 import { lastValueFrom } from 'rxjs';
 import { NgxMaskDirective } from 'ngx-mask';
-import { initialExtra, ExtraModel } from 'apps/admin/src/models/extra.model';
+import {
+  initialExtra,
+  ExtraModel,
+} from 'libraries/shared/src/lib/models/extra.model';
 
 @Component({
   imports: [

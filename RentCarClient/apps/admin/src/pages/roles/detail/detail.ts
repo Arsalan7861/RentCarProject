@@ -11,13 +11,16 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Result } from 'apps/admin/src/models/result.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
 } from 'apps/admin/src/services/breadcrumb';
 import Blank from 'apps/admin/src/components/blank/blank';
-import { initialRole, RoleModel } from 'apps/admin/src/models/role.model';
+import {
+  initialRole,
+  RoleModel,
+} from 'libraries/shared/src/lib/models/role.model';
 
 @Component({
   imports: [Blank],
@@ -34,7 +37,7 @@ export default class Detail {
   );
   readonly data = computed(() => this.result.value()?.data ?? initialRole);
   readonly loading = computed(() => this.result.isLoading());
-  readonly pageTitle = signal("Rol Detay");
+  readonly pageTitle = signal('Rol Detay');
 
   readonly #activated = inject(ActivatedRoute);
   readonly #breadcrumb = inject(BreadcrumbService);

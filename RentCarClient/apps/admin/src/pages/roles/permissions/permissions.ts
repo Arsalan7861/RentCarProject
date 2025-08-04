@@ -13,8 +13,11 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Result } from 'apps/admin/src/models/result.model';
-import { initialRole, RoleModel } from 'apps/admin/src/models/role.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
+import {
+  initialRole,
+  RoleModel,
+} from 'libraries/shared/src/lib/models/role.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,

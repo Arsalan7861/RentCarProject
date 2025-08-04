@@ -10,7 +10,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Result } from 'apps/admin/src/models/result.model';
+import { Result } from 'libraries/shared/src/lib/models/result.model';
 import {
   BreadcrumbModel,
   BreadcrumbService,
@@ -19,7 +19,7 @@ import Blank from 'apps/admin/src/components/blank/blank';
 import {
   initialCategory,
   CategoryModel,
-} from 'apps/admin/src/models/category.model';
+} from 'libraries/shared/src/lib/models/category.model';
 
 @Component({
   imports: [Blank],
@@ -36,7 +36,7 @@ export default class Detail {
   );
   readonly data = computed(() => this.result.value()?.data ?? initialCategory);
   readonly loading = computed(() => this.result.isLoading());
-  readonly pageTitle = signal("Kategori Detay");
+  readonly pageTitle = signal('Kategori Detay');
 
   readonly #activated = inject(ActivatedRoute);
   readonly #breadcrumb = inject(BreadcrumbService);

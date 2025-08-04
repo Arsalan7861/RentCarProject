@@ -163,6 +163,7 @@ public sealed class ReservationCreateCommandHandler(
 
         Form pickUpForm;
         Form deliveryForm;
+
         if (prevPickupForm is null)
         {
             var kilometer = await vehicleRepository
@@ -175,10 +176,6 @@ public sealed class ReservationCreateCommandHandler(
             Note formNote = new(string.Empty);
 
             pickUpForm = new(kilometer, supplies, imageUrls, damages, formNote);
-            // Explicitly set the collections using setter methods
-            pickUpForm.SetSupplies(supplies);
-            pickUpForm.SetImageUrls(imageUrls);
-            pickUpForm.SetDamages(damages);
         }
         else
         {
@@ -192,11 +189,6 @@ public sealed class ReservationCreateCommandHandler(
                 damages,
                 new(string.Empty)
                 );
-
-            // Explicitly set the collections using setter methods
-            pickUpForm.SetSupplies(supplies);
-            pickUpForm.SetImageUrls(new List<ImageUrl>());
-            pickUpForm.SetDamages(damages);
 
             if (pickUpForm.Kilometer.Value == 0)
             {
@@ -215,11 +207,6 @@ public sealed class ReservationCreateCommandHandler(
             pickUpForm.Damages.ToList(),
             pickUpForm.Note
             );
-
-        // Set collections for delivery form as well
-        deliveryForm.SetSupplies(pickUpForm.Supplies.ToList());
-        deliveryForm.SetImageUrls(pickUpForm.ImageUrls.ToList());
-        deliveryForm.SetDamages(pickUpForm.Damages.ToList());
 
         Reservation reservation = Reservation.Create(
             customerId,

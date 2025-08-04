@@ -477,6 +477,111 @@
     ]
   },
   {
+    "ContainingType": "RentCarServer.WebAPI.Modules.DashboardModule\u002B\u003C\u003Ec",
+    "Method": "\u003CMapDashboard\u003Eb__0_0",
+    "RelativePath": "dashboard/active-reservation-count",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "TS.Result.Result\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Dashboard"
+    ]
+  },
+  {
+    "ContainingType": "RentCarServer.WebAPI.Modules.DashboardModule\u002B\u003C\u003Ec",
+    "Method": "\u003CMapDashboard\u003Eb__0_3",
+    "RelativePath": "dashboard/customer-count",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "TS.Result.Result\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Dashboard"
+    ]
+  },
+  {
+    "ContainingType": "RentCarServer.WebAPI.Modules.DashboardModule\u002B\u003C\u003Ec",
+    "Method": "\u003CMapDashboard\u003Eb__0_2",
+    "RelativePath": "dashboard/monthly-income",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "TS.Result.Result\u00601[[System.Decimal, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Dashboard"
+    ]
+  },
+  {
+    "ContainingType": "RentCarServer.WebAPI.Modules.DashboardModule\u002B\u003C\u003Ec",
+    "Method": "\u003CMapDashboard\u003Eb__0_1",
+    "RelativePath": "dashboard/vehicle-count",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "TS.Result.Result\u00601[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Dashboard"
+    ]
+  },
+  {
+    "ContainingType": "RentCarServer.WebAPI.Modules.DashboardModule\u002B\u003C\u003Ec",
+    "Method": "\u003CMapDashboard\u003Eb__0_4",
+    "RelativePath": "dashboard/weekly-reservation-state",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "TS.Result.Result\u00601[[System.Collections.Generic.List\u00601[[RentCarServer.Application.Dashboards.ReservationWeeklyState, RentCarServer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "MediaTypes": [
+          "application/json"
+        ],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Dashboard"
+    ]
+  },
+  {
     "ContainingType": "RentCarServer.WebAPI.Modules.ExtraModule\u002B\u003C\u003Ec",
     "Method": "\u003CMapExtra\u003Eb__0_0",
     "RelativePath": "extras/",
