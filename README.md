@@ -11,9 +11,31 @@ Welcome to the RentCarProject! This project is designed to provide a comprehensi
 - [License](#license)
 
 ## Features
-- User-friendly dashboard for managing car rentals.
-- Separate client and server projects for better organization.
-- Responsive design for accessibility on various devices.
+- **User-Friendly Dashboard**: 
+  - A clean and intuitive interface that allows users to easily navigate through the car rental options.
+  - Provides quick access to available cars, booking history, and user account settings.
+
+- **Car Management**:
+  - Admin users can add, edit, and delete car listings.
+  - Each car listing includes details such as make, model, year, rental price, and availability status.
+  - Users can filter cars based on various criteria like price range, car type, and availability.
+
+- **Booking System**:
+  - Users can select a car and choose rental dates to check availability.
+  - The system calculates the total rental cost based on the selected duration and any applicable discounts.
+  - Users can view their booking history and manage upcoming reservations.
+
+- **User Authentication**:
+  - Secure login and registration system for users and administrators.
+  - Password recovery options to help users regain access to their accounts.
+
+- **Responsive Design**:
+  - The application is designed to work seamlessly on various devices, including desktops, tablets, and smartphones.
+  - Adapts layout and functionality for optimal user experience across different screen sizes.
+
+- **Admin Dashboard**:
+  - Special features for administrators to manage users, view analytics.
+  - Ability to monitor active bookings and manage car inventory.
 
   ![Dashboard Screenshot](https://github.com/Arsalan7861/RentCarProject/blob/master/Screenshots/dashboard.png)
 
