@@ -15,6 +15,10 @@ Welcome to the RentCarProject! This project is designed to provide a comprehensi
 - Separate client and server projects for better organization.
 - Responsive design for accessibility on various devices.
 
+  ![Dashboard Screenshot](https://github.com/Arsalan7861/RentCarProject/blob/master/Screenshots/dashboard.png)
+
+  ![Vehicles Screenshot](https://github.com/Arsalan7861/RentCarProject/blob/master/Screenshots/vehicles.png)
+
 ## Technology Stack
 - **Frontend:** Angular 20
 - **Backend:** .NET CORE 9
