@@ -1,3 +1,6 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<!-- eslint-disable @angular-eslint/template/interactive-supports-focus -->
+
 <!-- Sidebar -->
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-header">
@@ -13,8 +16,8 @@
 
   <div class="sidebar-content">
     <ul class="sidebar-menu">
-      @for (nav of navigations(); track nav.title) {
-         @if (!nav.haveSubNav && checkPermission(nav.permission)) {
+      @for (nav of navigations(); track nav.title) { @if (!nav.haveSubNav &&
+      checkPermission(nav.permission)) {
       <li
         [routerLink]="nav.url"
         routerLinkActive="active"
@@ -34,11 +37,10 @@
           <i class="bi bi-chevron-right menu-arrow"></i>
         </a>
         <ul class="submenu">
-          @for (subNav of nav.subNavs; track subNav.title) {
-            @if (checkPermission(subNav.permission)) {
-              <li><a [routerLink]="subNav.url">{{subNav.title}}</a></li>
-            }
-          }
+          @for (subNav of nav.subNavs; track subNav.title) { @if
+          (checkPermission(subNav.permission)) {
+          <li><a [routerLink]="subNav.url">{{subNav.title}}</a></li>
+          } }
         </ul>
       </li>
       } }
@@ -78,58 +80,6 @@
 
       <!-- Right Side - Profile & Notifications -->
       <div class="navbar-right">
-        <!-- Notifications -->
-        <div class="notification-dropdown">
-          <button class="notification-btn" data-bs-toggle="dropdown">
-            <i class="bi bi-bell"></i>
-            <span class="notification-badge">3</span>
-          </button>
-          <ul class="dropdown-menu notification-menu">
-            <li class="notification-header">
-              <h6>Bildirimler</h6>
-              <span class="badge bg-primary">3 Yeni</span>
-            </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li class="notification-item">
-              <div class="notification-icon bg-success">
-                <i class="bi bi-check-circle"></i>
-              </div>
-              <div class="notification-content">
-                <h6>Yeni Rezervasyon</h6>
-                <p>BMW 320i için yeni rezervasyon alındı</p>
-                <small>5 dakika önce</small>
-              </div>
-            </li>
-            <li class="notification-item">
-              <div class="notification-icon bg-warning">
-                <i class="bi bi-exclamation-triangle"></i>
-              </div>
-              <div class="notification-content">
-                <h6>Bakım Hatırlatması</h6>
-                <p>Mercedes C180'in bakım zamanı geldi</p>
-                <small>2 saat önce</small>
-              </div>
-            </li>
-            <li class="notification-item">
-              <div class="notification-icon bg-info">
-                <i class="bi bi-info-circle"></i>
-              </div>
-              <div class="notification-content">
-                <h6>Sistem Güncellemesi</h6>
-                <p>Yeni özellikler eklendi</p>
-                <small>1 gün önce</small>
-              </div>
-            </li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li class="notification-footer">
-              <a href="#">Tüm Bildirimleri Gör</a>
-            </li>
-          </ul>
-        </div>
 
         <!-- Profile Dropdown -->
         <div class="profile-dropdown">
@@ -166,19 +116,13 @@
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item">
                 <i class="bi bi-gear"></i>
                 Hesap Ayarları
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">
-                <i class="bi bi-bell"></i>
-                Bildirim Ayarları
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" (click)="openSettingsPopup()">
                 <i class="bi bi-shield-check"></i>
                 Güvenlik
               </a>
@@ -219,3 +163,78 @@
     </div>
   </main>
 </div>
+
+<flexi-popup
+  [(isPopupVisible)]="isSettingsPopupVisible"
+  [loading]="isSettingsPopupLoading()"
+  [showActionButtons]="false"
+  popupTitle="Güvenlik Ayarları"
+  height="200px"
+>
+  <div class="p-3">
+    <!-- TFA Settings -->
+    <div class="mb-4">
+      <div class="form-check form-switch mb-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="tfaEnabled"
+          [checked]="localTfaStatus()"
+          [disabled]="isSettingsPopupLoading()"
+          (change)="onTfaCheckboxChange($event)"
+        />
+        <label class="form-check-label" for="tfaEnabled">
+          <strong>İki Adımlı Doğrulama</strong>
+        </label>
+      </div>
+
+      <p class="text-muted small mb-3">
+        İki adımlı doğrulama hesabınız için ek bir güvenlik katmanı sağlar. @if
+        (localTfaStatus()) { Etkinleştirildiğinde, giriş yaparken telefon
+        numaranıza gönderilen kodu girmeniz gerekecek. } @else { Devre dışı
+        bırakıldığında, sadece kullanıcı adı ve şifre ile giriş yapabilirsiniz.
+        }
+      </p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex gap-2 justify-content-end">
+      @if (hasUnsavedChanges()) {
+      <button
+        type="button"
+        class="btn btn-outline-secondary"
+        [disabled]="isSettingsPopupLoading()"
+        (click)="resetTfaSettings()"
+      >
+        <i class="bi bi-arrow-counterclockwise me-1"></i>
+        İptal Et
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        [disabled]="isSettingsPopupLoading()"
+        (click)="saveTfaSettings()"
+      >
+        @if (isSettingsPopupLoading()) {
+        <span
+          class="spinner-border spinner-border-sm me-1"
+          role="status"
+          aria-hidden="true"
+        ></span>
+        } @else {
+        <i class="bi bi-check-lg me-1"></i>
+        } Kaydet
+      </button>
+      } @else {
+      <button
+        type="button"
+        class="btn btn-secondary"
+        (click)="isSettingsPopupVisible = false"
+      >
+        Kapat
+      </button>
+      }
+    </div>
+  </div>
+</flexi-popup>

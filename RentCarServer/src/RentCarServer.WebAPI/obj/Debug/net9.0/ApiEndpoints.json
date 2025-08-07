@@ -153,6 +153,25 @@
     ]
   },
   {
+    "ContainingType": "RentCarServer.WebAPI.Modules.AuthModule\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAuth\u003Eb__0_5",
+    "RelativePath": "auth/update-tfa-status",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ],
+    "Tags": [
+      "Auth"
+    ]
+  },
+  {
     "ContainingType": "RentCarServer.WebAPI.Modules.BranchModule\u002B\u003C\u003Ec",
     "Method": "\u003CMapBranch\u003Eb__0_0",
     "RelativePath": "branches/",

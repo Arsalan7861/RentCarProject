@@ -15,17 +15,24 @@ export const authGuard: CanActivateChildFn = (childRoute, state) => {
   try {
     const decode: any = jwtDecode(token);
 
-    common.decode().id =
-      decode[
+    // Create a new decode object to update the signal properly
+    const newDecodeData = {
+      id: decode[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-      ];
-    common.decode().fullName = decode['fullName'];
-    common.decode().fullNameWithEmail = decode['fullNameWithEmail'];
-    common.decode().email = decode['email'];
-    common.decode().role = decode['role'];
-    common.decode().permissions = JSON.parse(decode['permissions']);
-    common.decode().branch = decode['branch'];
-    common.decode().branchId = decode['branchId'];
+      ],
+      fullName: decode['fullName'],
+      fullNameWithEmail: decode['fullNameWithEmail'],
+      email: decode['email'],
+      role: decode['role'],
+      permissions: JSON.parse(decode['permissions']),
+      branch: decode['branch'],
+      branchId: decode['branchId'],
+      tfaStatus:
+        decode['tfaStatus'] === 'true' || decode['tfaStatus'] === true || false,
+    };
+
+    // Update the signal with the new object
+    common.decode.set(newDecodeData);
 
     const now = new Date().getTime() / 1000; // Current time in seconds
     const exp = decode.exp ?? 0; // Expiration time from the token

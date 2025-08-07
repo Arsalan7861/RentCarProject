@@ -7,6 +7,7 @@ export interface DecodeModel {
   permissions: string[];
   branch: string;
   branchId: string;
+  tfaStatus: boolean;
 }
 
 export const initialDecode: DecodeModel = {
@@ -18,4 +19,5 @@ export const initialDecode: DecodeModel = {
   permissions: [],
   branch: '',
   branchId: '',
+  tfaStatus: false,
 };

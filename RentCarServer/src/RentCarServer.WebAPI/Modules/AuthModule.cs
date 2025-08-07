@@ -64,5 +64,14 @@ public static class AuthModule
             }).
             Produces<Result<string>>()
             .RequireRateLimiting("check-forgot-password-code-fixed");
+
+
+        app.MapPost("/update-tfa-status",
+            async (ISender sender, CancellationToken cancellationToken) =>
+        {
+            var result = await sender.Send(new UpdateTFAStatusCommand(), cancellationToken);
+            return Results.Ok(result);
+        })
+        .RequireAuthorization();
     }
 }

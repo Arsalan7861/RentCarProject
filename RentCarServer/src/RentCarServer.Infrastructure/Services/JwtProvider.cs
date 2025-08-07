@@ -36,7 +36,8 @@ internal sealed class JwtProvider(
             new Claim("role", role.Name.Value ?? string.Empty),
             new Claim("permissions", role is null ? "" : JsonSerializer.Serialize(role.Permissions.Select(r=>r.Value))),
             new Claim("branch", branch.Name.Value ?? string.Empty),
-            new Claim("branchId", branch.Id ?? string.Empty)
+            new Claim("branchId", branch.Id ?? string.Empty),
+            new Claim("tfaStatus", user.TFAStatus.Value.ToString().ToLower())
         };
 
         SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(options.Value.SecretKey));
