@@ -9,9 +9,6 @@
       <span class="brand-text">RentCar</span>
       <span class="admin-badge">Admin</span>
     </div>
-    <button class="sidebar-toggle" id="sidebarToggle">
-      <i class="bi bi-list"></i>
-    </button>
   </div>
 
   <div class="sidebar-content">
@@ -26,20 +23,31 @@
       >
         <a class="menu-link">
           <i class="bi" [ngClass]="nav.icon"></i>
-          <span class="menu-text">{{nav.title}}</span>
+          <span class="menu-text"
+            >{{nav.translationKey ? (nav.translationKey | translate) :
+            nav.title}}</span
+          >
         </a>
       </li>
       } @else if(checkPermission(nav.permission)) {
       <li class="menu-item">
         <a class="menu-link">
           <i class="bi" [ngClass]="nav.icon"></i>
-          <span class="menu-text">{{nav.title}}</span>
+          <span class="menu-text"
+            >{{nav.translationKey ? (nav.translationKey | translate) :
+            nav.title}}</span
+          >
           <i class="bi bi-chevron-right menu-arrow"></i>
         </a>
         <ul class="submenu">
           @for (subNav of nav.subNavs; track subNav.title) { @if
           (checkPermission(subNav.permission)) {
-          <li><a [routerLink]="subNav.url">{{subNav.title}}</a></li>
+          <li>
+            <a [routerLink]="subNav.url"
+              >{{subNav.translationKey ? (subNav.translationKey | translate) :
+              subNav.title}}</a
+            >
+          </li>
           } }
         </ul>
       </li>
@@ -78,8 +86,20 @@
         </nav>
       </div>
 
-      <!-- Right Side - Profile & Notifications -->
+      <!-- Right Side - Language Toggle & Profile -->
       <div class="navbar-right">
+        <!-- Language Toggle Button -->
+        <div class="language-toggle me-3">
+          <button
+            type="button"
+            class="btn btn-outline-secondary btn-sm"
+            (click)="toggleLanguage()"
+            [title]="'Switch to ' + nextLanguageName()"
+          >
+            <i class="bi bi-translate me-1"></i>
+            {{ getCurrentLanguage()?.code?.toUpperCase() }}
+          </button>
+        </div>
 
         <!-- Profile Dropdown -->
         <div class="profile-dropdown">
@@ -112,19 +132,19 @@
             <li>
               <a class="dropdown-item" href="#">
                 <i class="bi bi-person"></i>
-                Profilim
+                {{ 'profile.my-profile' | translate }}
               </a>
             </li>
             <li>
               <a class="dropdown-item">
                 <i class="bi bi-gear"></i>
-                Hesap Ayarları
+                {{ 'profile.account-settings' | translate }}
               </a>
             </li>
             <li>
               <a class="dropdown-item" (click)="openSettingsPopup()">
                 <i class="bi bi-shield-check"></i>
-                Güvenlik
+                {{ 'profile.security' | translate }}
               </a>
             </li>
             <li>
@@ -133,7 +153,7 @@
             <li>
               <a class="dropdown-item" href="#">
                 <i class="bi bi-question-circle"></i>
-                Yardım & Destek
+                {{ 'profile.help-support' | translate }}
               </a>
             </li>
             <li>
@@ -147,7 +167,7 @@
                 (keyup)="($event.key === 'Enter' || $event.key === ' ') && logout()"
               >
                 <i class="bi bi-box-arrow-right"></i>
-                Çıkış Yap
+                {{ 'profile.logout' | translate }}
               </a>
             </li>
           </ul>
@@ -168,7 +188,7 @@
   [(isPopupVisible)]="isSettingsPopupVisible"
   [loading]="isSettingsPopupLoading()"
   [showActionButtons]="false"
-  popupTitle="Güvenlik Ayarları"
+  popupTitle="{{ 'security.title' | translate }}"
   height="200px"
 >
   <div class="p-3">

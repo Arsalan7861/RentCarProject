@@ -10,6 +10,7 @@ import Grid from '../../components/grid/grid';
 import { FlexiGridModule } from 'flexi-grid';
 import { RouterLink } from '@angular/router';
 import { Common } from '../../services/common';
+import { TranslationService } from '../../services/translation.service';
 
 @Component({
   imports: [Grid, FlexiGridModule, RouterLink],
@@ -18,16 +19,18 @@ import { Common } from '../../services/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class Roles {
+  
+  readonly #common = inject(Common);
+  readonly #translation = inject(TranslationService);
+  
   readonly breadcrumbs = signal<BreadcrumbModel[]>([
     {
-      title: 'Roller',
+      title: this.#translation.translate('nav.roles'),
       icon: 'bi-person-rolodex',
       url: '/roles',
       isActive: true,
     },
   ]);
-
-  readonly #common = inject(Common);
 
   checkPermission(permission: string) {
     return this.#common.checkPermission(permission);

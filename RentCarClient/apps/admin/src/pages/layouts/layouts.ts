@@ -20,6 +20,8 @@ import { FormsModule } from '@angular/forms';
 import { FlexiPopupModule } from 'flexi-popup';
 import { TfaService } from '../../services/tfa.service';
 import { FlexiToastService } from 'flexi-toast';
+import { TranslationService } from '../../services/translation.service';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 @Component({
   imports: [
     NgClass,
@@ -29,6 +31,7 @@ import { FlexiToastService } from 'flexi-toast';
     RouterLinkActive,
     FormsModule,
     FlexiPopupModule,
+    TranslatePipe,
   ],
   templateUrl: './layouts.html',
   encapsulation: ViewEncapsulation.None,
@@ -40,8 +43,6 @@ export default class Layouts {
   readonly navigations = signal<NavigationModel[]>(navigations);
   readonly decode = computed(() => {
     const decodedData = this.#common.decode();
-    console.log('Decode data in layouts:', decodedData);
-    console.log('TFA Status:', decodedData.tfaStatus);
     return decodedData;
   });
 
@@ -60,6 +61,7 @@ export default class Layouts {
   readonly #common = inject(Common);
   readonly #tfaService = inject(TfaService);
   readonly #toast = inject(FlexiToastService);
+  readonly #translation = inject(TranslationService);
 
   logout() {
     localStorage.clear();
@@ -93,10 +95,10 @@ export default class Layouts {
       () => {
         // Success callback
         this.#toast.showToast(
-          'Başarılı!',
-          newStatus
-            ? 'İki adımlı doğrulama etkinleştirildi, Tekrar giriş yapmanız gerekmektedir'
-            : 'İki adımlı doğrulama devre dışı bırakıldı, Tekrar giriş yapmanız gerekmektedir',
+          this.#translation.translate('message.success'),
+          this.#translation.translate(
+            newStatus ? 'message.tfa-enabled' : 'message.tfa-disabled'
+          ),
           'success'
         );
         this.logout();
@@ -105,17 +107,35 @@ export default class Layouts {
         // Error callback - reset local state to actual state
         this.localTfaStatus.set(this.decode().tfaStatus);
         this.#toast.showToast(
-          'Hata!',
-          'İki adımlı doğrulama ayarları güncellenemedi',
+          this.#translation.translate('message.error'),
+          this.#translation.translate('message.tfa-error'),
           'error'
         );
         this.isSettingsPopupLoading.set(false);
       }
     );
   }
-
   // Reset changes
   resetTfaSettings() {
     this.localTfaStatus.set(this.decode().tfaStatus);
   }
+
+  // Toggle language
+  toggleLanguage() {
+    const currentLang = this.#translation.currentLanguage();
+    const newLang = currentLang === 'tr' ? 'en' : 'tr';
+    this.#translation.setLanguage(newLang);
+  }
+
+  // Get current language info
+  getCurrentLanguage() {
+    return this.#translation
+      .getSupportedLanguages()
+      .find((lang) => lang.code === this.#translation.currentLanguage());
+  }
+
+  // Get the opposite language name for the toggle button
+  readonly nextLanguageName = computed(() => {
+    return this.#translation.currentLanguage() === 'tr' ? 'English' : 'Türkçe';
+  });
 }
