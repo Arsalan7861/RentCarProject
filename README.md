@@ -1,6 +1,6 @@
 # RentCarProject
 
-Welcome to the RentCarProject! This project is designed to provide a comprehensive car rental system with both client-side and server-side components. Built using modern web technologies, this application aims to facilitate easy car rentals for users.
+Welcome to the RentCarProject! This project is designed to provide a comprehensive car rental system with both client-side and server-side components. Built using **.NET CORE 9** and **Angular 20**, this application aims to facilitate easy car rentals for users.
 
 ## Table of Contents
 - [Features](#features)
@@ -40,6 +40,8 @@ Welcome to the RentCarProject! This project is designed to provide a comprehensi
   ![Dashboard Screenshot](https://github.com/Arsalan7861/RentCarProject/blob/master/Screenshots/dashboard.png)
 
   ![Vehicles Screenshot](https://github.com/Arsalan7861/RentCarProject/blob/master/Screenshots/vehicles.png)
+- **UI**:
+  - UI part is under development and It will be developed soon.  
 
 ## Technology Stack
 - **Frontend:** Angular 20
@@ -74,6 +76,8 @@ To set up the project locally, follow these steps:
    ```bash
    dotnet run
    ```
+   ### Important:
+     Don't forget to update the **connection string**
 
 ## Usage
 
