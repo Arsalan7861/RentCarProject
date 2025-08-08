@@ -8,7 +8,8 @@ using TS.Result;
 namespace RentCarServer.Application.Auth;
 public sealed record LoginCommand(
     string EmailOrUsername,
-    string Password) : IRequest<Result<LogincommandResponse>>;
+    string Password,
+    bool RememberMe) : IRequest<Result<LogincommandResponse>>;
 
 public sealed record LogincommandResponse()
 {
@@ -49,7 +50,7 @@ public sealed class LoginCommandHandler(
 
         if (!user.TFAStatus.Value)
         {
-            var token = await jwtProvider.CreateTokenAsync(user, cancellationToken);
+            var token = await jwtProvider.CreateTokenAsync(user, cancellationToken, request.RememberMe);
 
             var res = new LogincommandResponse
             {

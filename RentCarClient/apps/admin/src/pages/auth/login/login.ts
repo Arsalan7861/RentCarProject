@@ -32,6 +32,7 @@ export default class Login {
   readonly time = signal<{ min: number; sec: number }>({ min: 5, sec: 0 });
 
   readonly forgotPasswordModalLoading = signal<boolean>(false);
+  readonly rememberMe = signal<boolean>(false);
 
   readonly closeBtn = viewChild<ElementRef<HTMLButtonElement>>('modalCloseBtn');
   readonly passwordEl = viewChild<ElementRef<HTMLInputElement>>('passwordEl');
@@ -49,45 +50,56 @@ export default class Login {
   }
 
   login(form: NgForm) {
-    if (!form.valid) {
-      return;
-    }
-    this.loading.set(true);
-    this.#http.post<{ token: string | null; tfaCode: string | null }>(
-      '/rent/auth/login',
-      form.value,
-      (res) => {
-        if (res.token !== null) {
-          localStorage.setItem('response', res.token);
-          this.#router.navigateByUrl('/');
-        } else if (res.tfaCode !== null) {
-          this.tfaCode.set(res.tfaCode);
-          this.showTFAForm.set(true);
-          this.time.set({ min: 5, sec: 0 });
+    if (form.valid) {
+      this.loading.set(true);
 
-          const interval: any = setInterval(() => {
-            let min = this.time().min;
-            let sec = this.time().sec;
+      const loginData = {
+        emailOrUsername: form.value.emailOrUsername,
+        password: form.value.password,
+        rememberMe: this.rememberMe(), // Send to backend
+      };
 
-            sec--;
-            if (sec < 0) {
-              sec = 59;
-              min--;
-              if (min < 0) {
-                min = 0;
-                interval.clear();
-                this.showTFAForm.set(false);
+      this.#http.post<{ token: string | null; tfaCode: string | null }>(
+        '/rent/auth/login',
+        loginData,
+        (res) => {
+          if (res.token !== null) {
+            localStorage.setItem('response', res.token);
+            this.#router.navigateByUrl('/');
+          } else if (res.tfaCode !== null) {
+            this.tfaCode.set(res.tfaCode);
+            this.showTFAForm.set(true);
+            this.time.set({ min: 5, sec: 0 });
+
+            const interval: any = setInterval(() => {
+              let min = this.time().min;
+              let sec = this.time().sec;
+
+              sec--;
+              if (sec < 0) {
+                sec = 59;
+                min--;
+                if (min < 0) {
+                  min = 0;
+                  interval.clear();
+                  this.showTFAForm.set(false);
+                }
               }
-            }
-            this.time.set({ min, sec });
-          }, 1000);
+              this.time.set({ min, sec });
+            }, 1000);
+          }
+          this.loading.set(false);
+        },
+        (error) => {
+          this.loading.set(false);
         }
-        this.loading.set(false);
-      },
-      () => {
-        this.loading.set(false);
-      }
-    );
+      );
+    }
+  }
+
+  onRememberMeChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.rememberMe.set(target.checked);
   }
 
   loginWithTFA(form: NgForm) {

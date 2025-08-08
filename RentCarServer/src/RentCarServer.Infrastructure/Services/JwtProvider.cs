@@ -22,7 +22,7 @@ internal sealed class JwtProvider(
     IUnitOfWork unitOfWork,
     IOptions<JwtOptions> options) : IJwtProvider
 {
-    public async Task<string> CreateTokenAsync(User user, CancellationToken cancellationToken = default)
+    public async Task<string> CreateTokenAsync(User user, CancellationToken cancellationToken = default, bool rememberMe = false)
     {
         var role = await roleRepository.FirstOrDefaultAsync(r => r.Id == user.RoleId, cancellationToken);
         var branch = await branchRepository.FirstOrDefaultAsync(b => b.Id == user.BranchId, cancellationToken);
@@ -43,7 +43,12 @@ internal sealed class JwtProvider(
         SymmetricSecurityKey securityKey = new(Encoding.UTF8.GetBytes(options.Value.SecretKey));
         SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
+
         var expires = DateTime.Now.AddDays(1);
+        if (rememberMe)
+        {
+            expires = DateTime.Now.AddDays(30);
+        }
         JwtSecurityToken securityToken = new(
             issuer: options.Value.Issuer,
             audience: options.Value.Audience,
