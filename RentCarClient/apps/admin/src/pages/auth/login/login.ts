@@ -81,7 +81,7 @@ export default class Login {
                 min--;
                 if (min < 0) {
                   min = 0;
-                  interval.clear();
+                  clearInterval(interval);
                   this.showTFAForm.set(false);
                 }
               }
